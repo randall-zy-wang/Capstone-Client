@@ -3,7 +3,7 @@ import React from "react";
 import { BrowserRouter as Router, Switch, Route } from "react-router-dom";
 import Home from "./components/Home";
 import Navigation from "./components/Navigation";
-import profile from "./components/profile";
+import profile from "./components/profilePage";
 // import FindPets from "./components/FindPets";
 import Posts from "./components/posts";
 
