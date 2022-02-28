@@ -5,6 +5,7 @@ import Home from "./components/Home";
 import Navigation from "./components/Navigation";
 import profile from "./components/profile";
 // import FindPets from "./components/FindPets";
+import Posts from "./components/posts";
 
 class App extends React.Component {
   constructor(props) {
@@ -33,6 +34,7 @@ class App extends React.Component {
           <Switch>
             <Route exact path="/" component={Home} />
             <Route exact path="/profile" component={profile} />
+            <Route exact path="/posts" component={Posts} />
             {/* <Route exact path="/posts" component={Posts} /> */}
             {/* <Route exact path="/findPets" component={FindPets} /> */}
           </Switch>

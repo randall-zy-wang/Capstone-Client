@@ -51,7 +51,7 @@ const Navigation = () => {
                   }
                 >
                   <Link className="nav-link" to="/posts">
-                    Become a Sitter
+                    Post
                   </Link>
                 </li>
               </ul>
