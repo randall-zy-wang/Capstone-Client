@@ -23,7 +23,8 @@ const Posts = () => {
       dates: "Feb 10 - Feb 12",
       description:
         "Duis aute irure dolor in reprehenderit in voluptate velit esse cillumdolore eu fugiat nulla pariatur.",
-      image: "https://http.cat/202",
+      image:
+        "https://i.natgeofe.com/n/46b07b5e-1264-42e1-ae4b-8a021226e2d0/domestic-cat_thumb_square.jpg",
     },
     {
       title: "Fishcake",
@@ -31,7 +32,8 @@ const Posts = () => {
       dates: "Feb 20 - Feb 22",
       description:
         "Duis aute irure dolor in reprehenderit in voluptate velit esse cillum dolore eu fugiat nulla pariatur.",
-      image: "",
+      image:
+        "https://hips.hearstapps.com/hmg-prod.s3.amazonaws.com/images/dog-puppy-on-garden-royalty-free-image-1586966191.jpg?crop=0.752xw:1.00xh;0.175xw,0&resize=640:*",
     },
     {
       title: "Hawk",
@@ -39,7 +41,7 @@ const Posts = () => {
       dates: "Feb 10 - Feb 12",
       description:
         "Duis aute irure dolor in reprehenderit in voluptate velit esse cillum dolore eu fugiat nulla pariatur.",
-      image: "",
+      image: "https://upload.wikimedia.org/wikipedia/commons/a/ae/Katri.jpg",
     },
     {
       title: "Bond",
@@ -47,7 +49,8 @@ const Posts = () => {
       dates: "Feb 10 - Feb 12",
       description:
         "Duis aute irure dolor in reprehenderit in voluptate velit esse cillum dolore eu fugiat nulla pariatur.",
-      image: "",
+      image:
+        "https://assets.petco.com/petco/image/upload/f_auto,q_auto/rabbit-care-sheet",
     },
   ]);
   const postCardElements = [];
