@@ -39,8 +39,9 @@ function App() {
     const [breed, setBreed] = useState(function () {return "Golden Retriever"});
     const [petSize, setPetSize] = useState(function () {return "80 lbs"});
     const [petGender, setPetGender] = useState(function () {return "Boy"});
+    const [location, setLocation] = useState(function () {return "Seattle, WA"});
 
-    const stored = {name, month, day, color, petname, breed, petSize, petGender};
+    const stored = {name, month, day, color, petname, breed, petSize, petGender, location};
     const isBirthdayToday = now.getMonth() === month && now.getDate() === day;
 
     function handleEditComplete(result) {
@@ -54,6 +55,8 @@ function App() {
             setBreed(result.breed);
             setPetSize(result.petSize);
             setPetGender(result.petGender);
+            setLocation(result.location);
+
 
         }        
         setEditMode(false);

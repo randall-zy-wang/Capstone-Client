@@ -32,6 +32,7 @@ export default function EditableUserProfile({
     const [breed, setBreed] = useState(stored.breed);
     const [petSize, setPetSize] = useState(stored.petSize);
     const [petGender, setPetGender] = useState(stored.petGender);
+    const [location, setLocation] = useState(stored.location);
 
     const [color, setColor] = useState(stored.color);
 
@@ -43,7 +44,7 @@ export default function EditableUserProfile({
 
     function handleSaveClicked() {
         console.log("Saved");
-        editCompleteCallback({name, month, day, color, petname, breed, petGender, petSize});
+        editCompleteCallback({name, month, day, color, petname, breed, petGender, petSize, location});
     }
 
     useEffect(() => {
@@ -98,6 +99,15 @@ export default function EditableUserProfile({
                 type='text'
                 value={petGender}
                 onChange={e => setPetGender(e.target.value)}
+        
+            />
+        </Group>
+        <Group>            
+            <h2>Location:</h2>            
+            <input
+                type='text'
+                value={location}
+                onChange={e => setLocation(e.target.value)}
         
             />
         </Group>
