@@ -12,6 +12,54 @@ const SignInModal = () => {
     messageElement.classList.add(`form__message--${type}`);
   }
 
+  async function createAccount() {
+    // to do
+    let username = document.getElementById('signup_username').value;
+    let password = document.getElementById('signup_password').value;
+    let email = document.getElementById('signup_email').value;
+  
+    const myData = {
+      username: username,
+      email: email,
+      password: password
+    }
+  
+    let postPetResponse = await fetch(`/users/signup`,
+    {method: "POST", body: JSON.stringify(myData), headers: {'Content-Type': 'application/json'}}
+    )
+    let status = await postPetResponse.json();
+    if(status.status === "error"){
+      alert("Error:" + status.error.toString());
+  } else {
+      document.getElementById("signup_username").value = "";
+      document.getElementById("signup_email").value = "";
+      document.getElementById("signup_password").innerHTML = "";
+      document.getElementById("signup_confirm_password").innerHTML = "";
+      alert("Successfully registered!")
+    }
+  }
+  
+  async function signIn() {
+    let email = document.getElementById("signin_Email").value
+    let password = document.getElementById("signin_password").value
+    let loginData = {
+        email: email,
+        password: password
+    } 
+    let response = await fetch(
+        "/users/signin",
+        {
+            method: "POST",
+            body: JSON.stringify(loginData),
+            headers: {
+                'Content-Type': 'application/json'
+              }
+        }
+    );
+    let statusInfo = await response.text();
+    alert(statusInfo)
+  }
+
   function setInputError(inputElement, message) {
     inputElement.classList.add("form__input--error");
     inputElement.parentElement.querySelector(
@@ -34,12 +82,14 @@ const SignInModal = () => {
       .querySelector("#linkCreateAccount")
       .addEventListener("click", (e) => {
         e.preventDefault();
+        
         loginForm.classList.add("form--hidden");
         createAccountForm.classList.remove("form--hidden");
       });
 
     document.querySelector("#linkLogin").addEventListener("click", (e) => {
       e.preventDefault();
+      
       loginForm.classList.remove("form--hidden");
       createAccountForm.classList.add("form--hidden");
     });
@@ -48,12 +98,9 @@ const SignInModal = () => {
       e.preventDefault();
 
       // Perform your AJAX/Fetch login
+      signIn()
 
-      setFormMessage(
-        loginForm,
-        "error",
-        "Invalid username/password combination"
-      );
+      
     });
 
     document.querySelectorAll(".form__input").forEach((inputElement) => {
@@ -61,11 +108,11 @@ const SignInModal = () => {
         if (
           e.target.id === "signupUsername" &&
           e.target.value.length > 0 &&
-          e.target.value.length < 10
+          e.target.value.length < 1
         ) {
           setInputError(
             inputElement,
-            "Username must be at least 10 characters in length"
+            "Username must be at least 1 characters in length"
           );
         }
       });
@@ -86,10 +133,11 @@ const SignInModal = () => {
           <div className="modal-body">
             <form class="form" id="login">
               <h1 class="form__title">Login With UW Email</h1>
+              <span id="statusInfo"></span>
               <div class="form__message form__message--error"></div>
               <div class="form__input-group">
-                <label for="fname">Username</label>
-                <input type="text" class="form__input" id="username"></input>
+                <label for="fname">Email</label>
+                <input type="text" class="form__input" id="signin_Email"></input>
                 <div class="form__input-error-message"></div>
               </div>
               <div class="form__input-group">
@@ -97,7 +145,7 @@ const SignInModal = () => {
                 <input
                   type="password"
                   class="form__input"
-                  id="password"
+                  id="signin_password"
                 ></input>
                 <div class="form__input-error-message"></div>
               </div>
@@ -110,7 +158,7 @@ const SignInModal = () => {
                 </a>
               </p>
               <p class="form__text">
-                <a class="form__link" href="./" id="linkCreateAccount">
+                <a class="form__link"  id="linkCreateAccount">
                   Don't have an account? Create account
                 </a>
               </p>
@@ -121,7 +169,7 @@ const SignInModal = () => {
               <div class="form__input-group">
                 <input
                   type="text"
-                  id="signupUsername"
+                  id="signup_username"
                   class="form__input"
                   autofocus
                   placeholder="Username"
@@ -131,6 +179,7 @@ const SignInModal = () => {
               <div class="form__input-group">
                 <input
                   type="text"
+                  id="signup_email"
                   class="form__input"
                   autofocus
                   placeholder="Email Address"
@@ -140,6 +189,7 @@ const SignInModal = () => {
               <div class="form__input-group">
                 <input
                   type="password"
+                  id="signup_password"
                   class="form__input"
                   autofocus
                   placeholder="Password"
@@ -149,13 +199,14 @@ const SignInModal = () => {
               <div class="form__input-group">
                 <input
                   type="password"
+                  id="signup_confirm_password"
                   class="form__input"
                   autofocus
                   placeholder="Confirm password"
                 ></input>
                 <div class="form__input-error-message"></div>
               </div>
-              <button class="form__button" type="submit">
+              <button class="form__button" type="submit" onClick={createAccount}>
                 Submit
               </button>
               <p class="form__text">
@@ -171,5 +222,5 @@ const SignInModal = () => {
     </section>
   );
 };
-
+ 
 export default SignInModal;

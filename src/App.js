@@ -14,7 +14,7 @@ class App extends React.Component {
   }
 
   callAPI() {
-    fetch("http://localhost:9000/api")
+    fetch("http://localhost:9000/")
       .then((res) => res.text())
       .then((res) => this.setState({ apiResponse: res }));
   }
@@ -34,7 +34,7 @@ class App extends React.Component {
           <Switch>
             <Route exact path="/" component={Home} />
             <Route exact path="/profile" component={profile} />
-            <Route exact path="/posts" component={Posts} />
+            <Route exact path="/api/posts" component={Posts} />
             {/* <Route exact path="/posts" component={Posts} /> */}
             {/* <Route exact path="/findPets" component={FindPets} /> */}
           </Switch>
