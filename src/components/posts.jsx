@@ -16,12 +16,12 @@ function closeCreatePostModal() {
 
 const Posts = () => {
   const [page, setPage] = useState(1);
-  const [postCardData, setPostCardData] = useState(async() => { 
+  const [postCardData, setPostCardData] = useState(async () => {
     fetch(`/api/posts`)
       .then((response) => response.json())
-        .then((data) => console.log(data))
+      .then((data) => console.log(data));
   });
-  postCardData.then(data => console.log(data))
+  postCardData.then((data) => console.log(data));
   //   [{
   //     title: "Maddy",
   //     type: "Cat",
@@ -79,7 +79,7 @@ const Posts = () => {
         }}
       />
     );
-    console.log(postCardElements)
+    console.log(postCardElements);
   }
   return (
     <main id="posts">
@@ -141,11 +141,7 @@ const Posts = () => {
                 <textarea class="form__input" id="description"></textarea>
                 <div class="form__input-error-message"></div>
               </div>
-              <button
-                class="form__button"
-                type="submit"
-                onClick={storePosts}
-              >
+              <button class="form__button" type="submit" onClick={storePosts}>
                 Submit
               </button>
             </div>
@@ -188,7 +184,7 @@ const Posts = () => {
 };
 
 async function storePosts() {
-  try{
+  try {
     // document.getElementById("postStatus").innerHTML = "sending data..."
     let petName = document.getElementById("petName").value;
     let petType = document.getElementById("petType").value;
@@ -202,31 +198,32 @@ async function storePosts() {
       petType: petType,
       description: description,
       start_date: start_date,
-      end_date: end_date
+      end_date: end_date,
       // store thr image here
     };
 
-    console.log(myData)
-    let postPetResponse = await fetch(`/users/signup`,
-        {method: "POST", body: JSON.stringify(myData), headers: {'Content-Type': 'application/json'}}
-    )
+    console.log(myData);
+    let postPetResponse = await fetch(`/users/signup`, {
+      method: "POST",
+      body: JSON.stringify(myData),
+      headers: { "Content-Type": "application/json" },
+    });
     let status = await postPetResponse.json();
-    if(status.status === "error"){
-        alert("Error:" + status.error);
+    if (status.status === "error") {
+      alert("Error:" + status.error);
     } else {
-        document.getElementById("petName").value = "";
-        document.getElementById("petType").value = "";
-        document.getElementById("description").innerHTML = "";
-        document.getElementById("startDate").innerHTML = "";
-        document.getElementById("endDate").innerHTML = "";
-        alert("successfully uploaded")
-        // loadPosts();
-      }
-      closeCreatePostModal();
-  }catch(error){
-      console.log("There was an error: " + error);
+      document.getElementById("petName").value = "";
+      document.getElementById("petType").value = "";
+      document.getElementById("description").innerHTML = "";
+      document.getElementById("startDate").innerHTML = "";
+      document.getElementById("endDate").innerHTML = "";
+      alert("successfully uploaded");
+      // loadPosts();
+    }
+    closeCreatePostModal();
+  } catch (error) {
+    console.log("There was an error: " + error);
   }
-
 }
 
 export default Posts;
