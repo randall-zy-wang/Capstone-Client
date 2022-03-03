@@ -59,61 +59,61 @@ export default function EditableUserProfile({
     calcButtonTextColor(color);
 
     return <>
-        <Group>            
-            <h2>Name:</h2>
+        <div className='profile-edit-row'>            
+            <div className='profile-edit-row-name'>Name:</div>
             <input
                 type='text'
                 value={name}
                 onChange={e => setName(e.target.value)}
             />            
-        </Group>
-        <Group>            
-            <h2>Pet Name:</h2>
+        </div>
+        <div className='profile-edit-row'>            
+            <div className='profile-edit-row-name'>Pet Name:</div>
             <input
                 type='text'
                 value={petname}
                 onChange={e => setpetName(e.target.value)}
             />            
-        </Group>
-        <Group>            
-            <h2>Pet Breed:</h2>            
+        </div>
+        <div className='profile-edit-row'>            
+            <div className='profile-edit-row-name'>Pet Breed:</div>            
             <input
                 type='text'
                 value={breed}
                 onChange={e => setBreed(e.target.value)}
         
             />
-        </Group>
-        <Group>            
-            <h2>Pet Size:</h2>            
+        </div>
+        <div className='profile-edit-row'>            
+            <div className='profile-edit-row-name'>Pet Size:</div>            
             <input
                 type='int'
                 value={petSize}
                 onChange={e => setPetSize(e.target.value)}
         
             />
-        </Group>
-        <Group>            
-            <h2>Pet Gender:</h2>            
+        </div>
+        <div className='profile-edit-row'>            
+            <div className='profile-edit-row-name'>Pet Gender:</div>            
             <input
                 type='text'
                 value={petGender}
                 onChange={e => setPetGender(e.target.value)}
         
             />
-        </Group>
-        <Group>            
-            <h2>Location:</h2>            
+        </div>
+        <div className='profile-edit-row'>            
+            <div className='profile-edit-row-name'>Location:</div>            
             <input
                 type='text'
                 value={location}
                 onChange={e => setLocation(e.target.value)}
         
             />
-        </Group>
-        <Group>
-            <button style={buttonStyle} onClick={handleSaveClicked}>Save</button>
-            <button style={buttonStyle} onClick={handleCancelClicked}>Cancel</button>
-        </Group>
+        </div>
+        <div>
+            <button className='profile-edit-button' onClick={handleSaveClicked}>Save</button>
+            <button className='profile-edit-button'  onClick={handleCancelClicked}>Cancel</button>
+        </div>
     </>
 }
