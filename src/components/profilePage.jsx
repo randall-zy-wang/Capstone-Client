@@ -6,21 +6,12 @@ function randomColor() {
   return "#" + Math.floor(Math.random() * 16777215).toString(16);
 }
 
-// function randomName() {
-//   return "Username";
-// }
-
 function App() {
-  const now = new Date(Date.now());
-  const defaultBirthday = new Date(now.getTime() + 86400000);
-
   const [editMode, setEditMode] = useState(false);
 
   const [name, setName] = useState(function () {
     return "Enter Name";
   });
-  const [month, setMonth] = useState(defaultBirthday.getMonth());
-  const [day, setDay] = useState(defaultBirthday.getDate());
   const [color, setColor] = useState(randomColor());
   const [petname, setpetName] = useState(function () {
     return "Fishcake";
@@ -40,8 +31,6 @@ function App() {
 
   const stored = {
     name,
-    month,
-    day,
     color,
     petname,
     breed,
@@ -49,14 +38,11 @@ function App() {
     petGender,
     location,
   };
-  const isBirthdayToday = now.getMonth() === month && now.getDate() === day;
 
   function handleEditComplete(result) {
     console.log("handleEditComplete", result);
     if (result != null) {
       setName(result.name);
-      setMonth(result.month);
-      setDay(result.day);
       setColor(result.color);
       setpetName(result.petname);
       setBreed(result.breed);
