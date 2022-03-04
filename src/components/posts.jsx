@@ -120,11 +120,7 @@ const Posts = () => {
                 <textarea class="form__input" id="description"></textarea>
                 <div class="form__input-error-message"></div>
               </div>
-              <button
-                class="form__button"
-                type="submit"
-                onClick={storePosts}
-              >
+              <button class="form__button" type="submit" onClick={storePosts}>
                 Submit
               </button>
             </div>
@@ -167,7 +163,7 @@ const Posts = () => {
 };
 
 async function storePosts() {
-  try{
+  try {
     // document.getElementById("postStatus").innerHTML = "sending data..."
     let pet_name = document.getElementById("pet_name").value;
     let pet_type = document.getElementById("pet_type").value;
@@ -207,7 +203,6 @@ async function storePosts() {
   }catch(error){
       console.log("There was an error: " + error);
   }
-
 }
 
 export default Posts;

@@ -12,7 +12,8 @@ const SignInModal = () => {
     messageElement.classList.add(`form__message--${type}`);
   }
 
-  async function createAccount() {
+  async function createAccount(e) {
+    e.preventDefault()
     // to do
     let username = document.getElementById('signup_username').value;
     let password = document.getElementById('signup_password').value;
@@ -25,7 +26,7 @@ const SignInModal = () => {
     }
   
     let postPetResponse = await fetch(`/users/signup`,
-    {method: "POST", body: JSON.stringify(myData), headers: {'Content-Type': 'application/json'}}
+    {method: "POST", body: JSON.stringify(myData), headers: {'Content-Type': 'application/json'}, mode: "cors"}
     )
     let status = await postPetResponse.json();
     if(status.status === "error"){
@@ -39,7 +40,8 @@ const SignInModal = () => {
     }
   }
   
-  async function signIn() {
+  async function signIn(e) {
+    e.preventDefault();
     let email = document.getElementById("signin_Email").value
     let password = document.getElementById("signin_password").value
     let loginData = {
@@ -53,7 +55,8 @@ const SignInModal = () => {
             body: JSON.stringify(loginData),
             headers: {
                 'Content-Type': 'application/json'
-              }
+              },
+            mode: "cors"
         }
     );
     let statusInfo = await response.text();
@@ -94,14 +97,11 @@ const SignInModal = () => {
       createAccountForm.classList.add("form--hidden");
     });
 
-    loginForm.addEventListener("submit", (e) => {
+    document.querySelector("#createAccount").addEventListener("submit", (e) => {
       e.preventDefault();
-
-      // Perform your AJAX/Fetch login
-      signIn()
-
-      
-    });
+      createAccountForm.classList.add("form--hidden");
+      loginForm.classList.remove("form--hidden");
+    })
 
     document.querySelectorAll(".form__input").forEach((inputElement) => {
       inputElement.addEventListener("blur", (e) => {
@@ -131,7 +131,7 @@ const SignInModal = () => {
             <h1 className="modal-title mx-auto">Welcome to Pawdy</h1>
           </div>
           <div className="modal-body">
-            <form class="form" id="login">
+            <form class="form" id="login" onSubmit={signIn}>
               <h1 class="form__title">Login With UW Email</h1>
               <span id="statusInfo"></span>
               <div class="form__message form__message--error"></div>
@@ -163,7 +163,7 @@ const SignInModal = () => {
                 </a>
               </p>
             </form>
-            <form class="form form--hidden" id="createAccount">
+            <form class="form form--hidden" id="createAccount" onSubmit={createAccount}>
               <h1 class="form__title">Create Account</h1>
               <div class="form__message form__message--error"></div>
               <div class="form__input-group">
@@ -206,7 +206,7 @@ const SignInModal = () => {
                 ></input>
                 <div class="form__input-error-message"></div>
               </div>
-              <button class="form__button" type="submit" onClick={createAccount}>
+              <button class="form__button" type="submit">
                 Submit
               </button>
               <p class="form__text">
