@@ -2,7 +2,7 @@ import React from "react";
 // import deleteIcon from "../photos/icons8-delete-24.png";
 
 const PostCard = (props) => (
-  <div className="post-card" key={props.key}>
+  <div className="post-card" key={props.pet_name}>
     <img className="post-card-image" alt={props.pet_name} src={props.img} />
     <div className="post-card-title">{props.pet_name} | {props.pet_type}</div>
     <div className="post-card-subtitle">

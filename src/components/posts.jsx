@@ -31,15 +31,14 @@ const Posts = () => {
   const end = Math.min(page * MAX_ITEMS_PER_PAGE, postCardData.length);
   for (let i = start; i < end; i++) {
     // const newIndex = postCardElements.length;
-    // let cleanStart = postCardData[i].start_date.getDateWithoutTime()
-    // let cleanEnd = postCardData[i].end_date.getDateWithoutTime()
+    let cleanStart = new Date(postCardData[i].start_date).toLocaleDateString()
+    let cleanEnd = new Date(postCardData[i].end_date).toLocaleDateString()
     postCardElements.push(
       <PostCard
-        key={postCardData[i].pet_name}
         pet_name={postCardData[i].pet_name}
         pet_type={postCardData[i].pet_type}
-        start_date={postCardData[i].start_date}
-        end_date={postCardData[i].end_date}
+        start_date={cleanStart}
+        end_date={cleanEnd}
         description={postCardData[i].description}
         img={postCardData[i].img}
         // image={postCardData[i].image}
