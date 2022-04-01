@@ -17,23 +17,24 @@ function randomColor() {
 function App() {
   const [editMode, setEditMode] = useState(false);
   let userinfo = localStorage.getItem("userinfo");
-  if(userinfo){
+  if (userinfo) {
     userinfo = JSON.parse(userinfo);
-  }else{
+  } else {
     userinfo = {
-      name:"Disen Yang",
-      color:randomColor(),
-      petname:"Fishcake",
-      breed:"Golden Retriever",
-      petSize:"80 lbs",
-      petGender:"Boy",
-      location:"Seattle, WA",
-      headimg:wuyanzu,
-      pet1:"",
-      pet2:"",
-      pet3:"",
-      pet4:"",
-    }
+      name: "Hongyi Yang",
+      color: randomColor(),
+      pettype: "Dog",
+      petname: "Fishcake",
+      breed: "Golden Retriever",
+      petSize: "80 lbs",
+      petGender: "Boy",
+      location: "Seattle, WA",
+      headimg: wuyanzu,
+      pet1: "",
+      pet2: "",
+      pet3: "",
+      pet4: "",
+    };
   }
 
   const [name, setName] = useState(function () {
@@ -80,8 +81,7 @@ function App() {
       setPetSize(result.petSize);
       setPetGender(result.petGender);
       setLocation(result.location);
-      localStorage.setItem("userinfo",JSON.stringify(result))
-
+      localStorage.setItem("userinfo", JSON.stringify(result));
     }
     setEditMode(false);
   }

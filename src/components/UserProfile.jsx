@@ -18,7 +18,11 @@ export default function EditableUserProfile({ stored, startEditCallback }) {
           src={stored.headimg || wuyanzu}
         ></img>
         <div className="profile-row">
-          <span className="profile-row-name">My pet:</span>
+          <span className="profile-row-name">Pet Type:</span>
+          <span className="profile-row-value"> {stored.pettype}</span>
+        </div>
+        <div className="profile-row">
+          <span className="profile-row-name">Pet Name:</span>
           <span className="profile-row-value"> {stored.petname}</span>
         </div>
         {/* <div className='profile-row'>
@@ -47,7 +51,7 @@ export default function EditableUserProfile({ stored, startEditCallback }) {
           <img
             className="profile-con-top-pic"
             alt={"headshot"}
-            src={wuyanzu}
+            src={stored.headimg || wuyanzu}
           ></img>
           <div>
             <div className="profile-name">{stored.name}</div>
@@ -73,45 +77,49 @@ export default function EditableUserProfile({ stored, startEditCallback }) {
         </div>
         <div className="profile-name-p">Pet photos:</div>
         <div className="pet-photos">
-          {stored.pet1 ? (
-            <img
-              className="pet-icon"
-              alt={"pet photo1"}
-              src={stored.pet1}
-            ></img>
-          ) : (
-            ""
-          )}
-          {stored.pet2 ? (
-            <img
-              className="pet-icon"
-              alt={"pet photo2"}
-              src={stored.pet2}
-            ></img>
-          ) : (
-            ""
-          )}
-          {stored.pet3 ? (
-            <img
-              className="pet-icon"
-              alt={"pet photo3"}
-              src={stored.pet3}
-            ></img>
-          ) : (
-            ""
-          )}
-          {stored.pet4 ? (
-            <img
-              className="pet-icon"
-              alt={"pet photo4"}
-              src={stored.pet4}
-            ></img>
-          ) : (
-            ""
-          )}
-          <div className="add-icon">
-            <img className="add-icon-img" alt={"add icon"} src={add}></img>
+          <div className="pet-photos-sub">
+            {stored.pet1 ? (
+              <img
+                className="pet-icon"
+                alt={"pet photo1"}
+                src={stored.pet1}
+              ></img>
+            ) : (
+              ""
+            )}
+            {stored.pet2 ? (
+              <img
+                className="pet-icon"
+                alt={"pet photo2"}
+                src={stored.pet2}
+              ></img>
+            ) : (
+              ""
+            )}
           </div>
+          <div className="pet-photos-sub">
+            {stored.pet3 ? (
+              <img
+                className="pet-icon"
+                alt={"pet photo3"}
+                src={stored.pet3}
+              ></img>
+            ) : (
+              ""
+            )}
+            {stored.pet4 ? (
+              <img
+                className="pet-icon"
+                alt={"pet photo4"}
+                src={stored.pet4}
+              ></img>
+            ) : (
+              ""
+            )}
+          </div>
+          {/* <div className="add-icon">
+            <img className="add-icon-img" alt={"add icon"} src={add}></img>
+          </div> */}
         </div>
       </div>
       <div className="profile-wrapper-mobile">

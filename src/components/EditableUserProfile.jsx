@@ -38,9 +38,9 @@ export default function EditableUserProfile({ stored, editCompleteCallback }) {
     console.log("e===========", e.target.file);
 
     var file = e.target.files[0];
-    let r = new FileReader(); //preview
+    let r = new FileReader(); //本地预览
     r.onload = function () {
-      console.log(r.result); //r.result base code
+      console.log(r.result); //r.result 即为base64编码
       userinfo["pet" + index] = r.result;
       setUserinfo({ ...userinfo });
     };
