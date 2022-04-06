@@ -16,45 +16,40 @@ function closeCreatePostModal() {
 
 const Posts = () => {
   const [page, setPage] = useState(1);
-  const [postCardData, setPostCardData] = useState(async () => {
-    fetch(`/api/posts`)
-      .then((response) => response.json())
-      .then((data) => console.log(data));
-  });
-  postCardData.then((data) => console.log(data));
-  //   [{
-  //     title: "Maddy",
-  //     type: "Cat",
-  //     dates: "Feb 10 - Feb 12",
-  //     description:
-  //       "Duis aute irure dolor in reprehenderit in voluptate velit esse cillumdolore eu fugiat nulla pariatur.",
-  //     image: "https://http.cat/202",
-  //   },
-  //   {
-  //     title: "Fishcake",
-  //     type: "Dog",
-  //     dates: "Feb 20 - Feb 22",
-  //     description:
-  //       "Duis aute irure dolor in reprehenderit in voluptate velit esse cillum dolore eu fugiat nulla pariatur.",
-  //     image: "",
-  //   },
-  //   {
-  //     title: "Hawk",
-  //     type: "Fish",
-  //     dates: "Feb 10 - Feb 12",
-  //     description:
-  //       "Duis aute irure dolor in reprehenderit in voluptate velit esse cillum dolore eu fugiat nulla pariatur.",
-  //     image: "",
-  //   },
-  //   {
-  //     title: "Bond",
-  //     type: "Rabbit",
-  //     dates: "Feb 10 - Feb 12",
-  //     description:
-  //       "Duis aute irure dolor in reprehenderit in voluptate velit esse cillum dolore eu fugiat nulla pariatur.",
-  //     image: "",
-  //   },
-  // ]
+  const [postCardData, setPostCardData] = useState([
+    {
+      title: "Maddy",
+      type: "Cat",
+      dates: "Feb 10 - Feb 12",
+      description:
+        "Duis aute irure dolor in reprehenderit in voluptate velit esse cillumdolore eu fugiat nulla pariatur.",
+      image: "https://http.cat/202",
+    },
+    {
+      title: "Fishcake",
+      type: "Dog",
+      dates: "Feb 20 - Feb 22",
+      description:
+        "Duis aute irure dolor in reprehenderit in voluptate velit esse cillum dolore eu fugiat nulla pariatur.",
+      image: "",
+    },
+    {
+      title: "Hawk",
+      type: "Fish",
+      dates: "Feb 10 - Feb 12",
+      description:
+        "Duis aute irure dolor in reprehenderit in voluptate velit esse cillum dolore eu fugiat nulla pariatur.",
+      image: "",
+    },
+    {
+      title: "Bond",
+      type: "Rabbit",
+      dates: "Feb 10 - Feb 12",
+      description:
+        "Duis aute irure dolor in reprehenderit in voluptate velit esse cillum dolore eu fugiat nulla pariatur.",
+      image: "",
+    },
+  ]);
   const postCardElements = [];
   const start = Math.min((page - 1) * MAX_ITEMS_PER_PAGE, postCardData.length);
   const end = Math.min(page * MAX_ITEMS_PER_PAGE, postCardData.length);
@@ -62,12 +57,11 @@ const Posts = () => {
     const newIndex = postCardElements.length;
     postCardElements.push(
       <PostCard
-        petName={postCardData[i].title}
-        petType={postCardData[i].type}
-        start_date={postCardData[i].start_date}
-        end_date={postCardData[i].end_date}
+        title={postCardData[i].title}
+        type={postCardData[i].type}
+        dates={postCardData[i].dates}
         description={postCardData[i].description}
-        // image={postCardData[i].image}
+        image={postCardData[i].image}
         onDelete={() => {
           if (
             window.confirm("Are you really really sure that you wanna delete?")
@@ -79,7 +73,6 @@ const Posts = () => {
         }}
       />
     );
-    console.log(postCardElements);
   }
   return (
     <main id="posts">
@@ -117,11 +110,6 @@ const Posts = () => {
                 <div class="form__input-error-message"></div>
               </div>
               <div class="form__input-group">
-                <label for="petType">Pet Type</label>
-                <input type="text" class="form__input" id="petType"></input>
-                <div class="form__input-error-message"></div>
-              </div>
-              <div class="form__input-group">
                 <label for="startDate">Start date</label>
                 <input type="date" class="form__input" id="startDate"></input>
                 <div class="form__input-error-message"></div>
@@ -141,7 +129,26 @@ const Posts = () => {
                 <textarea class="form__input" id="description"></textarea>
                 <div class="form__input-error-message"></div>
               </div>
-              <button class="form__button" type="submit" onClick={storePosts}>
+              <button
+                class="form__button"
+                type="submit"
+                onClick={() => {
+                  setPostCardData([
+                    ...postCardData,
+                    {
+                      title: document.getElementById("petName").value,
+                      type: "",
+                      dates:
+                        document.getElementById("startDate").value +
+                        " - " +
+                        document.getElementById("endDate").value,
+                      description: document.getElementById("description").value,
+                      image: "",
+                    },
+                  ]);
+                  closeCreatePostModal();
+                }}
+              >
                 Submit
               </button>
             </div>
@@ -182,48 +189,5 @@ const Posts = () => {
     </main>
   );
 };
-
-async function storePosts() {
-  try {
-    // document.getElementById("postStatus").innerHTML = "sending data..."
-    let petName = document.getElementById("petName").value;
-    let petType = document.getElementById("petType").value;
-    let start_date = document.getElementById("startDate").value;
-    let end_date = document.getElementById("endDate").value;
-    let description = document.getElementById("description").value;
-    // store the image
-
-    const myData = {
-      petName: petName,
-      petType: petType,
-      description: description,
-      start_date: start_date,
-      end_date: end_date,
-      // store thr image here
-    };
-
-    console.log(myData);
-    let postPetResponse = await fetch(`/users/signup`, {
-      method: "POST",
-      body: JSON.stringify(myData),
-      headers: { "Content-Type": "application/json" },
-    });
-    let status = await postPetResponse.json();
-    if (status.status === "error") {
-      alert("Error:" + status.error);
-    } else {
-      document.getElementById("petName").value = "";
-      document.getElementById("petType").value = "";
-      document.getElementById("description").innerHTML = "";
-      document.getElementById("startDate").innerHTML = "";
-      document.getElementById("endDate").innerHTML = "";
-      alert("successfully uploaded");
-      // loadPosts();
-    }
-    closeCreatePostModal();
-  } catch (error) {
-    console.log("There was an error: " + error);
-  }
-}
 
 export default Posts;

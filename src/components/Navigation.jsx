@@ -50,7 +50,7 @@ const Navigation = () => {
                     "nav-item " + (rootPath === "posts" ? "active" : "")
                   }
                 >
-                  <Link className="nav-link" to="/api/posts">
+                  <Link className="nav-link" to="/posts">
                     Post
                   </Link>
                 </li>
