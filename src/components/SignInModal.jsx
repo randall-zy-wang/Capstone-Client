@@ -1,15 +1,76 @@
 import React from "react";
 
 const SignInModal = () => {
-  function setFormMessage(formElement, type, message) {
-    const messageElement = formElement.querySelector(".form__message");
+  // function setFormMessage(formElement, type, message) {
+  //   const messageElement = formElement.querySelector(".form__message");
 
-    messageElement.textContent = message;
-    messageElement.classList.remove(
-      "form__message--success",
-      "form__message--error"
+  //   messageElement.textContent = message;
+  //   messageElement.classList.remove(
+  //     "form__message--success",
+  //     "form__message--error"
+  //   );
+  //   messageElement.classList.add(`form__message--${type}`);
+  // }
+
+  async function createAccount(e) {
+    e.preventDefault()
+    // to do
+    let username = document.getElementById('signup_username').value;
+    let password = document.getElementById('signup_password').value;
+    let email = document.getElementById('signup_email').value;
+  
+    const myData = {
+      username: username,
+      email: email,
+      password: password
+    }
+  
+    let postPetResponse = await fetch(`/users/signup`,
+    {method: "POST", body: JSON.stringify(myData), headers: {'Content-Type': 'application/json'}, mode: "cors"}
+    )
+    let status = await postPetResponse.json();
+    if(status.status === "error"){
+      alert("Error:" + status.error.toString());
+  } else {
+      document.getElementById("signup_username").value = "";
+      document.getElementById("signup_email").value = "";
+      document.getElementById("signup_password").innerHTML = "";
+      document.getElementById("signup_confirm_password").innerHTML = "";
+      alert("Successfully registered!")
+    }
+  }
+  
+  async function signIn(e) {
+    e.preventDefault();
+    let email = document.getElementById("signin_Email").value
+    let password = document.getElementById("signin_password").value
+    let loginData = {
+        email: email,
+        password: password
+    } 
+    let response = await fetch(
+        "/users/signin",
+        {
+            method: "POST",
+            body: JSON.stringify(loginData),
+            headers: {
+                'Content-Type': 'application/json'
+              },
+            mode: "cors"
+        }
     );
-    messageElement.classList.add(`form__message--${type}`);
+    let statusInfo = await response.json();
+    if(statusInfo.status === "success") {
+      afterSignIn()
+    } else {
+      alert("Error: ", statusInfo.error)
+    }
+  }
+
+  function afterSignIn() {
+    // TO DO: add icon and user profile ...
+
+    window.location.reload(false)
   }
 
   function setInputError(inputElement, message) {
