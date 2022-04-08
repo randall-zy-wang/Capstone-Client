@@ -109,12 +109,13 @@ const SignInModal = () => {
       e.preventDefault();
 
       // Perform your AJAX/Fetch login
+      signIn(e);
 
-      setFormMessage(
-        loginForm,
-        "error",
-        "Invalid username/password combination"
-      );
+      // setFormMessage(
+      //   loginForm,
+      //   "error",
+      //   "Invalid username/password combination"
+      // );
     });
 
     loginForm.addEventListener("submit", (e) => {
@@ -122,11 +123,11 @@ const SignInModal = () => {
 
       // Perform your AJAX/Fetch login
 
-      setFormMessage(
-        loginForm,
-        "error",
-        "Invalid username/password combination"
-      );
+      // setFormMessage(
+      //   loginForm,
+      //   "error",
+      //   "Invalid username/password combination"
+      // );
     });
 
     document.querySelectorAll(".form__input").forEach((inputElement) => {
@@ -157,7 +158,7 @@ const SignInModal = () => {
             <h1 className="modal-title mx-auto">Welcome to Pawdy</h1>
           </div>
           <div className="modal-body">
-            <form class="form" id="login">
+            <form class="form" id="login" onSubmit={signIn}>
               <h1 class="form__title">Login With UW Email</h1>
               <div class="form__message form__message--error"></div>
               <div class="form__input-group">
@@ -188,7 +189,7 @@ const SignInModal = () => {
                 </a>
               </p>
             </form>
-            <form class="form form--hidden" id="createAccount">
+            <form class="form form--hidden" id="createAccount" onSubmit={createAccount}>
               <h1 class="form__title">Create Account</h1>
               <div class="form__message form__message--error"></div>
               <div class="form__input-group">
