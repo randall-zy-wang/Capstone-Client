@@ -3,7 +3,7 @@ import React from "react";
 import { BrowserRouter as Router, Switch, Route } from "react-router-dom";
 import Home from "./components/Home";
 import Navigation from "./components/Navigation";
-import profile from "./components/profile";
+import profile from "./components/profilePage";
 // import FindPets from "./components/FindPets";
 import Posts from "./components/posts";
 
@@ -14,7 +14,7 @@ class App extends React.Component {
   }
 
   callAPI() {
-    fetch("http://localhost:9000/")
+    fetch("http://localhost:9000/api")
       .then((res) => res.text())
       .then((res) => this.setState({ apiResponse: res }));
   }
@@ -34,7 +34,7 @@ class App extends React.Component {
           <Switch>
             <Route exact path="/" component={Home} />
             <Route exact path="/profile" component={profile} />
-            <Route exact path="/api/posts" component={Posts} />
+            <Route exact path="/posts" component={Posts} />
             {/* <Route exact path="/posts" component={Posts} /> */}
             {/* <Route exact path="/findPets" component={FindPets} /> */}
           </Switch>
