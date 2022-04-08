@@ -192,7 +192,6 @@ const SignInModal = () => {
               <h1 class="form__title">Create Account</h1>
               <div class="form__message form__message--error"></div>
               <div class="form__input-group">
-              
                 <input
                   type="text"
                   id="signupUsername"
