@@ -29,20 +29,21 @@ const SignInModal = () => {
     {method: "POST", body: JSON.stringify(myData), headers: {'Content-Type': 'application/json'}, mode: "cors"}
     )
     let status = await postPetResponse.json();
-    if(status.status === "error"){
-      alert("Error:" + status.error.toString());
-  } else {
+    console.log(status.status)
+    if(status.status === "success"){
       document.getElementById("signup_username").value = "";
       document.getElementById("signup_email").value = "";
-      document.getElementById("signup_password").innerHTML = "";
-      document.getElementById("signup_confirm_password").innerHTML = "";
+      document.getElementById("signup_password").value = "";
+      document.getElementById("signup_confirm_password").value = "";
       alert("Successfully registered!")
+    } else {
+      alert("Error:" + status.error);
     }
   }
   
   async function signIn(e) {
     e.preventDefault();
-    let email = document.getElementById("signin_Email").value
+    let email = document.getElementById("signin_email").value
     let password = document.getElementById("signin_password").value
     let loginData = {
         email: email,
@@ -69,7 +70,7 @@ const SignInModal = () => {
 
   function afterSignIn() {
     // TO DO: add icon and user profile ...
-
+    alert("Successfully signed in")
     window.location.reload(false)
   }
 
@@ -105,31 +106,6 @@ const SignInModal = () => {
       createAccountForm.classList.add("form--hidden");
     });
 
-    loginForm.addEventListener("submit", (e) => {
-      e.preventDefault();
-
-      // Perform your AJAX/Fetch login
-      signIn(e);
-
-      // setFormMessage(
-      //   loginForm,
-      //   "error",
-      //   "Invalid username/password combination"
-      // );
-    });
-
-    loginForm.addEventListener("submit", (e) => {
-      e.preventDefault();
-
-      // Perform your AJAX/Fetch login
-
-      // setFormMessage(
-      //   loginForm,
-      //   "error",
-      //   "Invalid username/password combination"
-      // );
-    });
-
     document.querySelectorAll(".form__input").forEach((inputElement) => {
       inputElement.addEventListener("blur", (e) => {
         if (
@@ -162,8 +138,8 @@ const SignInModal = () => {
               <h1 class="form__title">Login With UW Email</h1>
               <div class="form__message form__message--error"></div>
               <div class="form__input-group">
-                <label for="fname">Username</label>
-                <input type="text" class="form__input" id="username"></input>
+                <label for="fname">UW Email</label>
+                <input type="text" class="form__input" id="signin_email"></input>
                 <div class="form__input-error-message"></div>
               </div>
               <div class="form__input-group">
@@ -171,7 +147,7 @@ const SignInModal = () => {
                 <input
                   type="password"
                   class="form__input"
-                  id="password"
+                  id="signin_password"
                 ></input>
                 <div class="form__input-error-message"></div>
               </div>
@@ -195,7 +171,7 @@ const SignInModal = () => {
               <div class="form__input-group">
                 <input
                   type="text"
-                  id="signupUsername"
+                  id="signup_username"
                   class="form__input"
                   autofocus
                   placeholder="Username"
@@ -206,6 +182,7 @@ const SignInModal = () => {
                 <input
                   type="text"
                   class="form__input"
+                  id="signup_email"
                   autofocus
                   placeholder="Email Address"
                 ></input>
@@ -213,6 +190,7 @@ const SignInModal = () => {
               </div>
               <div class="form__input-group">
                 <input
+                  id="signup_password"
                   type="password"
                   class="form__input"
                   autofocus
@@ -222,6 +200,7 @@ const SignInModal = () => {
               </div>
               <div class="form__input-group">
                 <input
+                  id="signup_confirm_password"
                   type="password"
                   class="form__input"
                   autofocus
