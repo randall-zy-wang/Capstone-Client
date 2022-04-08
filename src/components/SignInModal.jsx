@@ -100,7 +100,7 @@ const SignInModal = () => {
               <h1 class="form__title">Login With UW Email</h1>
               <div class="form__message form__message--error"></div>
               <div class="form__input-group">
-                <label for="fname">Username</label>
+                <label for="fname">Email</label>
                 <input type="text" class="form__input" id="username"></input>
                 <div class="form__input-error-message"></div>
               </div>

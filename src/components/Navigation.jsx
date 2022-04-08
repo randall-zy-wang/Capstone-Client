@@ -33,7 +33,7 @@ const Navigation = () => {
               <ul className="navbar-nav ml-auto">
                 <li className={"nav-item " + (rootPath === "" ? "active" : "")}>
                   <Link className="nav-link" to="/">
-                    HOME
+                    Home
                   </Link>
                 </li>
                 <li
