@@ -95,34 +95,50 @@ const SignInModal = () => {
       .querySelector("#linkCreateAccount")
       .addEventListener("click", (e) => {
         e.preventDefault();
-        
         loginForm.classList.add("form--hidden");
         createAccountForm.classList.remove("form--hidden");
       });
 
     document.querySelector("#linkLogin").addEventListener("click", (e) => {
       e.preventDefault();
-      
       loginForm.classList.remove("form--hidden");
       createAccountForm.classList.add("form--hidden");
     });
 
-    document.querySelector("#createAccount").addEventListener("submit", (e) => {
+    loginForm.addEventListener("submit", (e) => {
       e.preventDefault();
-      createAccountForm.classList.add("form--hidden");
-      loginForm.classList.remove("form--hidden");
-    })
+
+      // Perform your AJAX/Fetch login
+
+      setFormMessage(
+        loginForm,
+        "error",
+        "Invalid username/password combination"
+      );
+    });
+
+    loginForm.addEventListener("submit", (e) => {
+      e.preventDefault();
+
+      // Perform your AJAX/Fetch login
+
+      setFormMessage(
+        loginForm,
+        "error",
+        "Invalid username/password combination"
+      );
+    });
 
     document.querySelectorAll(".form__input").forEach((inputElement) => {
       inputElement.addEventListener("blur", (e) => {
         if (
           e.target.id === "signupUsername" &&
           e.target.value.length > 0 &&
-          e.target.value.length < 1
+          e.target.value.length < 10
         ) {
           setInputError(
             inputElement,
-            "Username must be at least 1 characters in length"
+            "Username must be at least 10 characters in length"
           );
         }
       });
@@ -141,13 +157,12 @@ const SignInModal = () => {
             <h1 className="modal-title mx-auto">Welcome to Pawdy</h1>
           </div>
           <div className="modal-body">
-            <form class="form" id="login" onSubmit={signIn}>
+            <form class="form" id="login">
               <h1 class="form__title">Login With UW Email</h1>
-              <span id="statusInfo"></span>
               <div class="form__message form__message--error"></div>
               <div class="form__input-group">
-                <label for="fname">Email</label>
-                <input type="text" class="form__input" id="signin_Email"></input>
+                <label for="fname">Username</label>
+                <input type="text" class="form__input" id="username"></input>
                 <div class="form__input-error-message"></div>
               </div>
               <div class="form__input-group">
@@ -155,7 +170,7 @@ const SignInModal = () => {
                 <input
                   type="password"
                   class="form__input"
-                  id="signin_password"
+                  id="password"
                 ></input>
                 <div class="form__input-error-message"></div>
               </div>
@@ -168,18 +183,18 @@ const SignInModal = () => {
                 </a>
               </p>
               <p class="form__text">
-                <a class="form__link"  id="linkCreateAccount">
+                <a class="form__link" href="./" id="linkCreateAccount">
                   Don't have an account? Create account
                 </a>
               </p>
             </form>
-            <form class="form form--hidden" id="createAccount" onSubmit={createAccount}>
+            <form class="form form--hidden" id="createAccount">
               <h1 class="form__title">Create Account</h1>
               <div class="form__message form__message--error"></div>
               <div class="form__input-group">
                 <input
                   type="text"
-                  id="signup_username"
+                  id="signupUsername"
                   class="form__input"
                   autofocus
                   placeholder="Username"
@@ -189,7 +204,6 @@ const SignInModal = () => {
               <div class="form__input-group">
                 <input
                   type="text"
-                  id="signup_email"
                   class="form__input"
                   autofocus
                   placeholder="Email Address"
@@ -199,7 +213,6 @@ const SignInModal = () => {
               <div class="form__input-group">
                 <input
                   type="password"
-                  id="signup_password"
                   class="form__input"
                   autofocus
                   placeholder="Password"
@@ -209,7 +222,6 @@ const SignInModal = () => {
               <div class="form__input-group">
                 <input
                   type="password"
-                  id="signup_confirm_password"
                   class="form__input"
                   autofocus
                   placeholder="Confirm password"
@@ -232,5 +244,5 @@ const SignInModal = () => {
     </section>
   );
 };
- 
+
 export default SignInModal;

@@ -119,7 +119,26 @@ const Posts = () => {
                 <textarea class="form__input" id="description"></textarea>
                 <div class="form__input-error-message"></div>
               </div>
-              <button class="form__button" type="submit" onClick={storePosts}>
+              <button
+                class="form__button"
+                type="submit"
+                onClick={() => {
+                  setPostCardData([
+                    ...postCardData,
+                    {
+                      title: document.getElementById("petName").value,
+                      type: "",
+                      dates:
+                        document.getElementById("startDate").value +
+                        " - " +
+                        document.getElementById("endDate").value,
+                      description: document.getElementById("description").value,
+                      image: "",
+                    },
+                  ]);
+                  closeCreatePostModal();
+                }}
+              >
                 Submit
               </button>
             </div>
