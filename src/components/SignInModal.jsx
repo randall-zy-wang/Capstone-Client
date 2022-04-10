@@ -1,4 +1,6 @@
 import React from "react";
+import { BrowserRouter as Router, Switch, Route } from "react-router-dom";
+
 
 const SignInModal = () => {
   // function setFormMessage(formElement, type, message) {
@@ -70,7 +72,9 @@ const SignInModal = () => {
 
   function afterSignIn() {
     // TO DO: add icon and user profile ...
+    
     alert("Successfully signed in")
+    
     window.location.reload(false)
   }
 

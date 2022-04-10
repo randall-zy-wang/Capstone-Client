@@ -35,6 +35,7 @@ class App extends React.Component {
             <Route exact path="/" component={Home} />
             <Route exact path="/profile" component={profile} />
             <Route exact path="/posts" component={Posts} />
+            
             {/* <Route exact path="/posts" component={Posts} /> */}
             {/* <Route exact path="/findPets" component={FindPets} /> */}
           </Switch>
