@@ -29,20 +29,21 @@ const SignInModal = () => {
     {method: "POST", body: JSON.stringify(myData), headers: {'Content-Type': 'application/json'}, mode: "cors"}
     )
     let status = await postPetResponse.json();
-    if(status.status === "error"){
-      alert("Error:" + status.error.toString());
-  } else {
+    console.log(status.status)
+    if(status.status === "success"){
       document.getElementById("signup_username").value = "";
       document.getElementById("signup_email").value = "";
-      document.getElementById("signup_password").innerHTML = "";
-      document.getElementById("signup_confirm_password").innerHTML = "";
+      document.getElementById("signup_password").value = "";
+      document.getElementById("signup_confirm_password").value = "";
       alert("Successfully registered!")
+    } else {
+      alert("Error:" + status.error);
     }
   }
   
   async function signIn(e) {
     e.preventDefault();
-    let email = document.getElementById("signin_Email").value
+    let email = document.getElementById("signin_email").value
     let password = document.getElementById("signin_password").value
     let loginData = {
         email: email,
@@ -60,17 +61,23 @@ const SignInModal = () => {
         }
     );
     let statusInfo = await response.json();
+    console.log(statusInfo)
     if(statusInfo.status === "success") {
-      afterSignIn()
+      afterSignIn(statusInfo.username)
     } else {
       alert("Error: ", statusInfo.error)
     }
   }
 
-  function afterSignIn() {
+  function afterSignIn(username) {
     // TO DO: add icon and user profile ...
-
-    window.location.reload(false)
+    let identity_div = document.getElementById("identity_div");
+    identity_div.innerHTML = `
+        <p> Hello, ${username} </p>
+        <a href="signout" class="btn btn-danger" role="button">Log out</a>`;
+    alert("Successfully signed in")
+    document.getElementById("signInModal").classList.add("d-none")
+    // window.location.reload(false)
   }
 
   function setInputError(inputElement, message) {
@@ -105,30 +112,6 @@ const SignInModal = () => {
       createAccountForm.classList.add("form--hidden");
     });
 
-    loginForm.addEventListener("submit", (e) => {
-      e.preventDefault();
-
-      // Perform your AJAX/Fetch login
-
-      setFormMessage(
-        loginForm,
-        "error",
-        "Invalid username/password combination"
-      );
-    });
-
-    loginForm.addEventListener("submit", (e) => {
-      e.preventDefault();
-
-      // Perform your AJAX/Fetch login
-
-      setFormMessage(
-        loginForm,
-        "error",
-        "Invalid username/password combination"
-      );
-    });
-
     document.querySelectorAll(".form__input").forEach((inputElement) => {
       inputElement.addEventListener("blur", (e) => {
         if (
@@ -157,12 +140,12 @@ const SignInModal = () => {
             <h1 className="modal-title mx-auto">Welcome to Pawdy</h1>
           </div>
           <div className="modal-body">
-            <form class="form" id="login">
+            <form class="form" id="login" onSubmit={signIn}>
               <h1 class="form__title">Login With UW Email</h1>
               <div class="form__message form__message--error"></div>
               <div class="form__input-group">
-                <label for="fname">Email</label>
-                <input type="text" class="form__input" id="username"></input>
+                <label for="fname">UW Email</label>
+                <input type="text" class="form__input" id="signin_email"></input>
                 <div class="form__input-error-message"></div>
               </div>
               <div class="form__input-group">
@@ -170,7 +153,7 @@ const SignInModal = () => {
                 <input
                   type="password"
                   class="form__input"
-                  id="password"
+                  id="signin_password"
                 ></input>
                 <div class="form__input-error-message"></div>
               </div>
@@ -188,13 +171,13 @@ const SignInModal = () => {
                 </a>
               </p>
             </form>
-            <form class="form form--hidden" id="createAccount">
+            <form class="form form--hidden" id="createAccount" onSubmit={createAccount}>
               <h1 class="form__title">Create Account</h1>
               <div class="form__message form__message--error"></div>
               <div class="form__input-group">
                 <input
                   type="text"
-                  id="signupUsername"
+                  id="signup_username"
                   class="form__input"
                   autofocus
                   placeholder="Username"
@@ -205,6 +188,7 @@ const SignInModal = () => {
                 <input
                   type="text"
                   class="form__input"
+                  id="signup_email"
                   autofocus
                   placeholder="Email Address"
                 ></input>
@@ -212,6 +196,7 @@ const SignInModal = () => {
               </div>
               <div class="form__input-group">
                 <input
+                  id="signup_password"
                   type="password"
                   class="form__input"
                   autofocus
@@ -221,6 +206,7 @@ const SignInModal = () => {
               </div>
               <div class="form__input-group">
                 <input
+                  id="signup_confirm_password"
                   type="password"
                   class="form__input"
                   autofocus

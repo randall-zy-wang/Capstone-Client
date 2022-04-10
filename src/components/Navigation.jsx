@@ -55,7 +55,7 @@ const Navigation = () => {
                   </Link>
                 </li>
               </ul>
-              <div className="nav-item active">
+              <div className="nav-item active" id="identity_div">
                 <button
                   className="btn btn-main"
                   data-toggle="modal"
