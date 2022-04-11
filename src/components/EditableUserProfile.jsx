@@ -8,6 +8,7 @@ import instagram from "../photos/instagram.png";
 // import pet4 from "../photos/pet4.jpg";
 import add from "../photos/add.png";
 import wuyanzu from "../photos/wuyanzu.png";
+import React from "react";
 
 export default function EditableUserProfile({ stored, editCompleteCallback }) {
   //   const [name, setName] = useState(stored.name);

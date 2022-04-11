@@ -61,17 +61,23 @@ const SignInModal = () => {
         }
     );
     let statusInfo = await response.json();
+    console.log(statusInfo)
     if(statusInfo.status === "success") {
-      afterSignIn()
+      afterSignIn(statusInfo.username)
     } else {
       alert("Error: ", statusInfo.error)
     }
   }
 
-  function afterSignIn() {
+  function afterSignIn(username) {
     // TO DO: add icon and user profile ...
+    let identity_div = document.getElementById("identity_div");
+    identity_div.innerHTML = `
+        <p> Hello, ${username} </p>
+        <a href="signout" class="btn btn-danger" role="button">Log out</a>`;
     alert("Successfully signed in")
-    window.location.reload(false)
+    document.getElementById("signInModal").classList.add("d-none")
+    // window.location.reload(false)
   }
 
   function setInputError(inputElement, message) {

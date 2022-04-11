@@ -25,10 +25,20 @@ const Posts = () => {
       .then(function (data) {
         setPostCardData(data);
       });
+
+    document
+      .getElementById("create_post_button")
+      .addEventListener("click", (e) => {
+        e.preventDefault();
+        storePosts();
+        closeCreatePostModal();
+      });
   }, [page]);
+
   const postCardElements = [];
   const start = Math.min((page - 1) * MAX_ITEMS_PER_PAGE, postCardData.length);
   const end = Math.min(page * MAX_ITEMS_PER_PAGE, postCardData.length);
+
   for (let i = start; i < end; i++) {
     // const newIndex = postCardElements.length;
     let cleanStart = new Date(postCardData[i].start_date).toLocaleDateString();
@@ -54,6 +64,7 @@ const Posts = () => {
       />
     );
   }
+
   return (
     <main id="posts">
       <h1 className="post-title">Sitting Posts</h1>
@@ -65,11 +76,13 @@ const Posts = () => {
         alt="Add a Post"
         src={plusIcon}
         onClick={() => {
+          // if user is logged in
           const createPostModal = document.getElementById("createPostModal");
           createPostModal.style.display = "block";
           setTimeout(() => {
             createPostModal.classList.add("show");
           }, 25);
+          // else pop up sign in modal(see navigation.js)
         }}
       />
       <section className="modal fade" id="createPostModal">
@@ -85,7 +98,7 @@ const Posts = () => {
               <h1 className="modal-title mx-auto">Create a post</h1>
             </div>
             <div className="modal-body">
-              <div class="form__input-group">
+              {/* <div class="form__input-group">
                 <label for="petName">Pet Name</label>
                 <input type="text" class="form__input" id="pet_name"></input>
                 <div class="form__input-error-message"></div>
@@ -94,7 +107,12 @@ const Posts = () => {
                 <label for="petType">Pet Type</label>
                 <input type="text" class="form__input" id="pet_type"></input>
                 <div class="form__input-error-message"></div>
-              </div>
+              </div> */}
+              <label for="pets">Choose a pet: </label>
+              <select name="pets" id="pets_dropdown">
+                <option value="pet 1">pet 1</option>
+                <option value="volvo">Add a pet</option>
+              </select>
               <div class="form__input-group">
                 <label for="startDate">Start date</label>
                 <input type="date" class="form__input" id="start_date"></input>
@@ -121,24 +139,25 @@ const Posts = () => {
                 <div class="form__input-error-message"></div>
               </div>
               <button
+                id="create_post_button"
                 class="form__button"
                 type="submit"
-                onClick={() => {
-                  setPostCardData([
-                    ...postCardData,
-                    {
-                      title: document.getElementById("petName").value,
-                      type: "",
-                      dates:
-                        document.getElementById("startDate").value +
-                        " - " +
-                        document.getElementById("endDate").value,
-                      description: document.getElementById("description").value,
-                      image: "",
-                    },
-                  ]);
-                  closeCreatePostModal();
-                }}
+                // onClick={() => {
+                //   setPostCardData([
+                //     ...postCardData,
+                //     {
+                //       title: document.getElementById("petName").value,
+                //       type: "",
+                //       dates:
+                //         document.getElementById("startDate").value +
+                //         " - " +
+                //         document.getElementById("endDate").value,
+                //       description: document.getElementById("description").value,
+                //       image: "",
+                //     },
+                //   ]);
+                //   closeCreatePostModal();
+                // }}
               >
                 Submit
               </button>
