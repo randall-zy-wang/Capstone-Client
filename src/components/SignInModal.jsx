@@ -1,4 +1,4 @@
-import React from "react";
+import React, { useState } from "react";
 
 const SignInModal = () => {
   // function setFormMessage(formElement, type, message) {
@@ -11,6 +11,8 @@ const SignInModal = () => {
   //   );
   //   messageElement.classList.add(`form__message--${type}`);
   // }
+
+  // const [activeUser, setActiveUser] = useState("")
 
   async function createAccount(e) {
     e.preventDefault()
@@ -61,7 +63,6 @@ const SignInModal = () => {
         }
     );
     let statusInfo = await response.json();
-    console.log(statusInfo)
     if(statusInfo.status === "success") {
       afterSignIn(statusInfo.username)
     } else {
@@ -76,8 +77,7 @@ const SignInModal = () => {
         <p> Hello, ${username} </p>
         <a href="signout" class="btn btn-danger" role="button">Log out</a>`;
     alert("Successfully signed in")
-    document.getElementById("signInModal").classList.add("d-none")
-    // window.location.reload(false)
+    document.getElementById("signInModal").style.display = "none"
   }
 
   function setInputError(inputElement, message) {

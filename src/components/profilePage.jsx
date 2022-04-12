@@ -17,6 +17,7 @@ function randomColor() {
 
 function App() {
   const [editMode, setEditMode] = useState(false);
+
   let userinfo = localStorage.getItem("userinfo");
   if (userinfo) {
     userinfo = JSON.parse(userinfo);
