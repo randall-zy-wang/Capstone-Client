@@ -11,6 +11,7 @@ import pet2 from "../photos/pet2.jpg";
 import pet3 from "../photos/pet3.jpg";
 import pet4 from "../photos/pet4.jpg";
 import add from "../photos/add.png";
+import Copyright from "./Copyright";
 function randomColor() {
   return "#" + Math.floor(Math.random() * 16777215).toString(16);
 }
@@ -108,6 +109,7 @@ function App() {
           </>
         )}
       </div>
+      <Copyright />
     </div>
   );
 }

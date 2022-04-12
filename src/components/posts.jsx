@@ -23,9 +23,9 @@ const Posts = () => {
   useEffect(() => {
     fetch(`/api/posts`)
       .then((response) => response.json())
-        .then(function(data) {
-          setPostCardData(data)
-        })
+      .then(function (data) {
+        setPostCardData(data);
+      });
 
     document.getElementById("submit_post_button").addEventListener("click", (e) => {
       e.preventDefault()
@@ -72,8 +72,8 @@ const Posts = () => {
 
   for (let i = start; i < end; i++) {
     // const newIndex = postCardElements.length;
-    let cleanStart = new Date(postCardData[i].start_date).toLocaleDateString()
-    let cleanEnd = new Date(postCardData[i].end_date).toLocaleDateString()
+    let cleanStart = new Date(postCardData[i].start_date).toLocaleDateString();
+    let cleanEnd = new Date(postCardData[i].end_date).toLocaleDateString();
     postCardElements.push(
       <PostCard
         pet_name={postCardData[i].pet_name}
@@ -98,6 +98,7 @@ const Posts = () => {
 
   return (
     <main id="posts">
+      <h1 className="post-title">Sitting Posts</h1>
       <div>{postCardElements}</div>
       <Copyright />
       <img
@@ -214,8 +215,6 @@ const Posts = () => {
   );
 };
 
-
-
 async function storePosts() {
   try {
     // document.getElementById("postStatus").innerHTML = "sending data..."
@@ -233,29 +232,31 @@ async function storePosts() {
       description: description,
       start_date: start_date,
       end_date: end_date,
-      img: img
+      img: img,
     };
 
     // console.log(myData)
-    let postPetResponse = await fetch(`/api/posts`,
-        {method: "POST", body: JSON.stringify(myData), headers: {'Content-Type': 'application/json'}}
-    )
+    let postPetResponse = await fetch(`/api/posts`, {
+      method: "POST",
+      body: JSON.stringify(myData),
+      headers: { "Content-Type": "application/json" },
+    });
     let status = await postPetResponse.json();
-    if(status.status === "error"){
-        alert("Error: ", status.error);
+    if (status.status === "error") {
+      alert("Error: ", status.error);
     } else {
-        document.getElementById("pet_name").value = "";
-        document.getElementById("pet_type").value = "";
-        document.getElementById("description").innerHTML = "";
-        document.getElementById("start_date").innerHTML = "";
-        document.getElementById("end_date").innerHTML = "";
-        document.getElementById("img_link").innerHTML = "";
-        alert("successfully uploaded")
-        window.location.href = "/api/posts"
-      }
-      closeCreatePostModal();
-  }catch(error){
-      console.log("There was an error: " + error);
+      document.getElementById("pet_name").value = "";
+      document.getElementById("pet_type").value = "";
+      document.getElementById("description").innerHTML = "";
+      document.getElementById("start_date").innerHTML = "";
+      document.getElementById("end_date").innerHTML = "";
+      document.getElementById("img_link").innerHTML = "";
+      alert("successfully uploaded");
+      window.location.href = "/api/posts";
+    }
+    closeCreatePostModal();
+  } catch (error) {
+    console.log("There was an error: " + error);
   }
 }
 
