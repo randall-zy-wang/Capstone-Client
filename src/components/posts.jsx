@@ -27,43 +27,49 @@ const Posts = () => {
         setPostCardData(data);
       });
 
-    document.getElementById("submit_post_button").addEventListener("click", (e) => {
-      e.preventDefault()
-      storePosts()
-      closeCreatePostModal();
-    })
-
-    document.getElementById("create_post_button").addEventListener("click", async (e) => {
-      e.preventDefault()
-        // if user is logged in
-        let petsJson
-        try {
-          let response = await fetch('/api/pets')
-          petsJson = await response.json()
-        } catch (error) {
-          petsJson = {status: "error", error: error}
-        }
-        if(petsJson.status === "success"){
-          console.log(petsJson.pets)
-          let petsOptions = petsJson.pets.forEach(pet => {
-            petsOptions += `<option value="${pet}">${pet}</option>\t`
-          });
-          document.getElementById("pets_dropdown").innerHTML = petsOptions
-          setTimeout(() => {
-            createPostModal.classList.add("show");
-          }, 25);
-          const createPostModal = document.getElementById("createPostModal");
-          createPostModal.style.display = "block";
-        } else {
-          if(petsJson.error === "not logged in") {
-            // prompt log in
-            alert('You must log in to create a post!')
-            document.getElementById('signInModal').style.display = "block"
-          } else {
-            alert(petsJson.error)
+      document.getElementById("submit_post_button").addEventListener("click", (e) => {
+        e.preventDefault()
+        storePosts()
+        closeCreatePostModal();
+      })
+      
+      document.getElementById("create_post_button").addEventListener("click", async (e) => {
+        e.preventDefault()
+          let petsJson
+          try {
+            let response = await fetch('/api/pets')
+            petsJson = await response.json()
+          } catch (error) {
+            petsJson = {status: "error", error: error}
           }
-        }
-    })
+          console.log(petsJson)
+          if(petsJson.status === "success"){
+            console.log(petsJson.pets)
+            let petsOptions = petsJson.pets.forEach(pet => {
+              petsOptions += `<option value="${pet}">${pet}</option>\t`
+            });
+            document.getElementById("pets_dropdown").innerHTML = petsOptions
+            setTimeout(() => {
+              createPostModal.classList.add("show");
+            }, 25);
+            const createPostModal = document.getElementById("createPostModal");
+            createPostModal.style.display = "block";
+          } else {
+            if(petsJson.error === "not logged in") {
+              // prompt log in
+              alert('You must log in to create a post!')
+              document.getElementById('signInModal').style.display = "block"
+            } else {
+              alert(petsJson.error)
+            }
+          }
+      })
+
+      // clean up function
+      return () => {
+        document.getElementById("create_post_button").removeEventListener("click")
+        document.getElementById("submit_post_button").removeEventListener("click")
+      }
   }, [page])
 
   const postCardElements = [];

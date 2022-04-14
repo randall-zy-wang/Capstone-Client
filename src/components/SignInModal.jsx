@@ -1,4 +1,4 @@
-import React, { useState } from "react";
+import React, { useEffect, useState } from "react";
 
 const SignInModal = () => {
   // function setFormMessage(formElement, type, message) {
@@ -11,8 +11,8 @@ const SignInModal = () => {
   //   );
   //   messageElement.classList.add(`form__message--${type}`);
   // }
-
-  // const [activeUser, setActiveUser] = useState("")
+  const [activeUser, setActiveUser] = useState("default value")
+  useEffect(() => {afterSignIn()}, [activeUser])
 
   async function createAccount(e) {
     e.preventDefault()
@@ -43,6 +43,7 @@ const SignInModal = () => {
     }
   }
   
+  
   async function signIn(e) {
     e.preventDefault();
     let email = document.getElementById("signin_email").value
@@ -64,20 +65,23 @@ const SignInModal = () => {
     );
     let statusInfo = await response.json();
     if(statusInfo.status === "success") {
-      afterSignIn(statusInfo.username)
+      setActiveUser(statusInfo.username)
+      // afterSignIn(statusInfo.username)
     } else {
       alert("Error: ", statusInfo.error)
     }
   }
 
-  function afterSignIn(username) {
+  function afterSignIn() {
     // TO DO: add icon and user profile ...
-    let identity_div = document.getElementById("identity_div");
-    identity_div.innerHTML = `
-        <p> Hello, ${username} </p>
-        <a href="signout" class="btn btn-danger" role="button">Log out</a>`;
-    alert("Successfully signed in")
-    document.getElementById("signInModal").style.display = "none"
+    if(activeUser !== "default value"){
+      let identity_div = document.getElementById("identity_div");
+      identity_div.innerHTML = `
+          <p> Hello, ${activeUser} </p>
+          <a href="signout" class="btn btn-danger" role="button">Log out</a>`;
+      alert("Successfully signed in")
+      document.getElementById("signInModal").style.display = "none"
+    }
   }
 
   function setInputError(inputElement, message) {
