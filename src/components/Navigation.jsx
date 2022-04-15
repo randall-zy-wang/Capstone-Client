@@ -33,7 +33,7 @@ const Navigation = () => {
               <ul className="navbar-nav ml-auto">
                 <li className={"nav-item " + (rootPath === "" ? "active" : "")}>
                   <Link className="nav-link" to="/">
-                    HOME
+                    Home
                   </Link>
                 </li>
                 <li
@@ -55,7 +55,7 @@ const Navigation = () => {
                   </Link>
                 </li>
               </ul>
-              <div className="nav-item active">
+              <div className="nav-item active" id="identity_div">
                 <button
                   className="btn btn-main"
                   data-toggle="modal"

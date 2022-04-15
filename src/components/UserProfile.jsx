@@ -2,6 +2,7 @@ import wuyanzu from "../photos/wuyanzu.png";
 import snap from "../photos/snapchat.png";
 import facebook from "../photos/facebook2.png";
 import instagram from "../photos/instagram.png";
+import React from "react";
 import pet1 from "../photos/pet1.jpg";
 import pet2 from "../photos/pet2.jpg";
 import pet3 from "../photos/pet3.jpg";

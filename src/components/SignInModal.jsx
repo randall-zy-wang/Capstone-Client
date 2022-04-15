@@ -1,6 +1,5 @@
 import React from "react";
-import { BrowserRouter as Router, Switch, Route } from "react-router-dom";
-
+import { BrowserRouter as Router, Switch, Route, Redirect } from "react-router-dom";
 
 const SignInModal = () => {
   // function setFormMessage(formElement, type, message) {
@@ -63,19 +62,24 @@ const SignInModal = () => {
         }
     );
     let statusInfo = await response.json();
+    console.log(statusInfo)
     if(statusInfo.status === "success") {
-      afterSignIn()
+      afterSignIn(statusInfo.username)
     } else {
       alert("Error: ", statusInfo.error)
     }
   }
 
-  function afterSignIn() {
+  function afterSignIn(username) {
     // TO DO: add icon and user profile ...
-    
+    let identity_div = document.getElementById("identity_div");
+    identity_div.innerHTML = `
+        <p> Hello, ${username} </p>
+        <a href="signout" class="btn btn-danger" role="button">Log out</a>`;
     alert("Successfully signed in")
+    document.getElementById("signInModal").classList.add("d-none")
+    // window.location.reload(false)
     
-    window.location.reload(false)
   }
 
   function setInputError(inputElement, message) {
