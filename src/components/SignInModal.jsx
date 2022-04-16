@@ -1,5 +1,5 @@
-import React from "react";
-import { BrowserRouter as Router, Switch, Route, Redirect } from "react-router-dom";
+import React, { useEffect, useState } from "react";
+import {useHistory} from "react-router";
 
 const SignInModal = () => {
   // function setFormMessage(formElement, type, message) {
@@ -12,6 +12,9 @@ const SignInModal = () => {
   //   );
   //   messageElement.classList.add(`form__message--${type}`);
   // }
+  const [activeUser, setActiveUser] = useState("default value")
+  useEffect(() => {afterSignIn()}, [activeUser])
+  let history = useHistory();
 
   async function createAccount(e) {
     e.preventDefault()
@@ -62,24 +65,51 @@ const SignInModal = () => {
         }
     );
     let statusInfo = await response.json();
-    console.log(statusInfo)
+    console.log("Sign in status", statusInfo)
     if(statusInfo.status === "success") {
-      afterSignIn(statusInfo.username)
+      setActiveUser(statusInfo.username)
+      // afterSignIn(statusInfo.username)
     } else {
       alert("Error: ", statusInfo.error)
     }
   }
 
-  function afterSignIn(username) {
+  function afterSignIn() {
     // TO DO: add icon and user profile ...
-    let identity_div = document.getElementById("identity_div");
-    identity_div.innerHTML = `
-        <p> Hello, ${username} </p>
-        <a href="signout" class="btn btn-danger" role="button">Log out</a>`;
-    alert("Successfully signed in")
-    document.getElementById("signInModal").classList.add("d-none")
-    // window.location.reload(false)
-    
+    if(activeUser !== "default value"){
+      let identity_div = document.getElementById("identity_div");
+      identity_div.innerHTML = `
+          <p> Hello, ${activeUser} </p>
+          <a class="btn btn-danger" role="button" id="logoutbtn">Log out</a>`;
+      document.getElementById("logoutbtn").addEventListener('click', signOut);
+      alert("Successfully signed in")
+      document.getElementById("signInModal").style.display = "none"
+    }
+  }
+
+  async function signOut() {
+    let response = await fetch(
+      "/users/signout", 
+      {
+        method: "POST",
+        headers: {
+          'Content-Type': 'application/json'
+        },
+        mode: 'cors'
+      }
+    );
+    let statusInfo = await response.json();
+    if (statusInfo.status === "success") {
+      setActiveUser("default value")
+      document.getElementById("logoutbtn").removeEventListener('click', signOut);
+      let div = document.getElementById("identity_div")
+      div.innerHTML = `
+      <button className="btn btn-main" data-toggle="modal" data-target= '#signInModal'>
+        Sign in
+      </button>`;
+      document.getElementById("signInModal").style.display = "block"
+      history.push("/");
+    }
   }
 
   function setInputError(inputElement, message) {
@@ -99,7 +129,8 @@ const SignInModal = () => {
   document.addEventListener("DOMContentLoaded", () => {
     const loginForm = document.querySelector("#login");
     const createAccountForm = document.querySelector("#createAccount");
-
+    createAccountForm.addEventListener("submit", createAccount)
+    loginForm.addEventListener("submit", signIn)
     document
       .querySelector("#linkCreateAccount")
       .addEventListener("click", (e) => {
@@ -142,7 +173,7 @@ const SignInModal = () => {
             <h1 className="modal-title mx-auto">Welcome to Pawdy</h1>
           </div>
           <div className="modal-body">
-            <form class="form" id="login" onSubmit={signIn}>
+            <form class="form" id="login">
               <h1 class="form__title">Login With UW Email</h1>
               <div class="form__message form__message--error"></div>
               <div class="form__input-group">
@@ -173,7 +204,7 @@ const SignInModal = () => {
                 </a>
               </p>
             </form>
-            <form class="form form--hidden" id="createAccount" onSubmit={createAccount}>
+            <form class="form form--hidden" id="createAccount">
               <h1 class="form__title">Create Account</h1>
               <div class="form__message form__message--error"></div>
               <div class="form__input-group">

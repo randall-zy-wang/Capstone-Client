@@ -17,9 +17,28 @@ export default function EditableUserProfile({ stored, editCompleteCallback }) {
     editCompleteCallback(null);
   }
 
-  function handleSaveClicked() {
-    console.log("Saved");
-    editCompleteCallback(userinfo);
+  async function handleSaveClicked() {
+    console.log(userinfo)
+    let data = {
+      username: userinfo.name,
+      contact: {
+        snap: userinfo.snap,
+        instagram: userinfo.instagram,
+        facebook: userinfo.facebook
+      }
+    }
+    let postProfileResponse = await fetch(`/profile`,
+        {method: "POST", body: JSON.stringify(data), headers: {'Content-Type': 'application/json'}}
+    )
+    let statusInfo = await postProfileResponse.json();
+    if(statusInfo.status === "success"){
+      // display user profile
+      alert("profile saved successfully")
+        editCompleteCallback(userinfo);
+    } else{
+      alert(statusInfo.error)
+    }
+    
   }
 
   function uploadPhoto(e) {
