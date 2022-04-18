@@ -36,15 +36,7 @@ const Navigation = () => {
                     Home
                   </Link>
                 </li>
-                <li
-                  className={
-                    "nav-item " + (rootPath === "profile" ? "active" : "")
-                  }
-                >
-                  <Link className="nav-link" to="/profile">
-                    Profile
-                  </Link>
-                </li>
+                
                 <li
                   className={
                     "nav-item " + (rootPath === "posts" ? "active" : "")
@@ -52,6 +44,17 @@ const Navigation = () => {
                 >
                   <Link className="nav-link" to="/posts">
                     Post
+                  </Link>
+                </li>
+                {/* {loggedIn ? (<></>) : (<></>)} */}
+                <li
+                  id="profile_link"
+                  className={
+                    "nav-item " + (rootPath === "profile" ? "active" : "")
+                  }
+                >
+                  <Link className="nav-link" to="/profile">
+                    Profile
                   </Link>
                 </li>
               </ul>

@@ -1,5 +1,4 @@
 import wuyanzu from "../photos/wuyanzu.png";
-import snap from "../photos/snapchat.png";
 import facebook from "../photos/facebook2.png";
 import instagram from "../photos/instagram.png";
 import React from "react";
@@ -9,7 +8,12 @@ import pet3 from "../photos/pet3.jpg";
 import pet4 from "../photos/pet4.jpg";
 import add from "../photos/add.png";
 
-export default function EditableUserProfile({ stored, startEditCallback }) {
+export default function UserProfile({ stored, startEditCallback }) {
+  console.log("stored: ", stored)
+  let pet = {}
+  if(stored.pets[0] !== null){
+    pet = stored.pets[0]
+  }
   return (
     <div className="profile-container">
       <div className="profile-wrapper">
@@ -20,30 +24,26 @@ export default function EditableUserProfile({ stored, startEditCallback }) {
         ></img>
         <div className="profile-row">
           <span className="profile-row-name">Pet Type:</span>
-          <span className="profile-row-value"> {stored.pettype}</span>
+          <span className="profile-row-value"> {pet.type}</span>
         </div>
         <div className="profile-row">
           <span className="profile-row-name">Pet Name:</span>
-          <span className="profile-row-value"> {stored.petname}</span>
+          <span className="profile-row-value"> {pet.name}</span>
         </div>
-        {/* <div className='profile-row'>
-        <span className='profile-row-name'>Pet Name:</span>
-        <span className='profile-row-value'> {stored.petname}</span>
-      </div> */}
         <div className="profile-row">
           <span className="profile-row-name">Pet Breed:</span>
-          <span className="profile-row-value"> {stored.breed}</span>
+          <span className="profile-row-value"> {pet.breed}</span>
         </div>
         <div className="profile-row">
           <span className="profile-row-name">Pet Size:</span>
-          <span className="profile-row-value"> {stored.petSize}</span>
+          <span className="profile-row-value"> {pet.size}</span>
         </div>
         <div className="profile-row">
           <span className="profile-row-name">Pet Gender:</span>
-          <span className="profile-row-value"> {stored.petGender}</span>
+          <span className="profile-row-value"> {pet.gender}</span>
         </div>
         <button className="profile-edit-button" onClick={startEditCallback}>
-          Edit
+          Edit Pet
         </button>
       </div>
 
@@ -55,27 +55,32 @@ export default function EditableUserProfile({ stored, startEditCallback }) {
             src={stored.headimg || wuyanzu}
           ></img>
           <div>
-            <div className="profile-name">{stored.name}</div>
-            <div className="profile-addr">{stored.location}</div>
+            <div className="profile-name">{stored.username}</div>
           </div>
         </div>
 
         <div className="profile-name-c">Contact:</div>
         <div className="profile-icons">
-          <a href={stored.snap} target="new">
-            <img className="profile-icon" alt={"snap"} src={snap}></img>
-          </a>
-          <a href={stored.instagram} target="new">
-            <img
-              className="profile-icon"
-              alt={"instagram"}
-              src={instagram}
-            ></img>
-          </a>
-          <a href={stored.facebook} target="new">
-            <img className="profile-icon" alt={"facebook"} src={facebook}></img>
-          </a>
+          {stored.contact.instagram === null ? (<></>) : (<>
+            <a href={"https://www.instagram.com/" + stored.contact.instagram} target="new">
+              <img
+                className="profile-icon"
+                alt={"instagram"}
+                src={instagram}
+              ></img>
+            </a>
+          </>)}
+          {stored.contact.facebook === null ? (<></>) : (<>
+            <a href={"https://www.facebook.com/" + stored.contact.facebook} target="new">
+              <img className="profile-icon" alt={"facebook"} src={facebook}></img>
+            </a>
+          </>)}
         </div>
+        {stored.contact.phone === null ? (<></>) : (<>
+          <div className="profile-icons">
+            <a href= {"tel:+" + stored.contact.phone}>{stored.contact.phone}</a>
+          </div>
+        </>)}
         <div className="profile-name-p">Pet photos:</div>
         <div className="pet-photos">
           <div className="pet-photos-sub">
@@ -129,26 +134,26 @@ export default function EditableUserProfile({ stored, startEditCallback }) {
         </div>
         <div className="profile-row">
           <span className="profile-row-name">My pet:</span>
-          <span className="profile-row-value"> {stored.petname}</span>
+          <span className="profile-row-value"> {pet.name}</span>
         </div>
-        {/* <div className='profile-row'>
-        <span className='profile-row-name'>Pet Name:</span>
-        <span className='profile-row-value'> {stored.petname}</span>
-      </div> */}
         <div className="profile-row">
           <span className="profile-row-name">Pet Breed:</span>
-          <span className="profile-row-value"> {stored.breed}</span>
+          <span className="profile-row-value"> {pet.breed}</span>
         </div>
         <div className="profile-row">
           <span className="profile-row-name">Pet Size:</span>
-          <span className="profile-row-value"> {stored.petSize}</span>
+          <span className="profile-row-value"> {pet.size}</span>
         </div>
         <div className="profile-row">
           <span className="profile-row-name">Pet Gender:</span>
-          <span className="profile-row-value"> {stored.petGender}</span>
+          <span className="profile-row-value"> {pet.gender}</span>
+        </div>
+        <div className="profile-row">
+          <span className="profile-row-name">Pet Age:</span>
+          <span className="profile-row-value"> {pet.age}</span>
         </div>
         <button className="profile-edit-button" onClick={startEditCallback}>
-          Edit
+          Edit Pet
         </button>
       </div>
     </div>

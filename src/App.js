@@ -3,7 +3,7 @@ import React from "react";
 import { BrowserRouter as Router, Switch, Route } from "react-router-dom";
 import Home from "./components/Home";
 import Navigation from "./components/Navigation";
-import profile from "./components/profilePage";
+import Profile from "./components/profilePage";
 // import FindPets from "./components/FindPets";
 import Posts from "./components/posts";
 
@@ -26,17 +26,12 @@ class App extends React.Component {
   render() {
     return (
       <div className="App">
-        {/* <header className="App-header">
-          <p>{this.state.apiResponse}</p>
-        </header> */}
         <Router>
           <Navigation />
           <Switch>
             <Route exact path="/" component={Home} />
-            <Route exact path="/profile" component={profile} />
+            <Route exact path="/profile" component={Profile} />
             <Route exact path="/posts" component={Posts} />
-            {/* <Route exact path="/posts" component={Posts} /> */}
-            {/* <Route exact path="/findPets" component={FindPets} /> */}
           </Switch>
         </Router>
       </div>

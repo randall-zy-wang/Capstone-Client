@@ -45,8 +45,8 @@ const Posts = () => {
           console.log(petsJson)
           if(petsJson.status === "success"){
             console.log(petsJson.pets)
-            let petsOptions = petsJson.pets.forEach(pet => {
-              petsOptions += `<option value="${pet}">${pet}</option>\t`
+            let petsOptions = petsJson.pets.map(pet => {
+              return `<option value="${pet}">${pet}</option>\t`
             });
             document.getElementById("pets_dropdown").innerHTML = petsOptions
             setTimeout(() => {

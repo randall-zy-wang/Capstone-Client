@@ -11,30 +11,20 @@ import wuyanzu from "../photos/wuyanzu.png";
 import React from "react";
 
 export default function EditableUserProfile({ stored, editCompleteCallback }) {
-  //   const [name, setName] = useState(stored.name);
-  const [userinfo, setUserinfo] = useState(stored);
+  const[userinfo, setUserinfo] = useState(stored)
+
   function handleCancelClicked() {
     editCompleteCallback(null);
   }
 
   async function handleSaveClicked() {
-    console.log(userinfo)
-    let data = {
-      username: userinfo.name,
-      contact: {
-        snap: userinfo.snap,
-        instagram: userinfo.instagram,
-        facebook: userinfo.facebook
-      }
-    }
     let postProfileResponse = await fetch(`/profile`,
-        {method: "POST", body: JSON.stringify(data), headers: {'Content-Type': 'application/json'}}
+        {method: "POST", body: JSON.stringify(userinfo), headers: {'Content-Type': 'application/json'}}
     )
     let statusInfo = await postProfileResponse.json();
     if(statusInfo.status === "success"){
-      // display user profile
       alert("profile saved successfully")
-        editCompleteCallback(userinfo);
+      editCompleteCallback(userinfo);
     } else{
       alert(statusInfo.error)
     }
@@ -45,57 +35,37 @@ export default function EditableUserProfile({ stored, editCompleteCallback }) {
     console.log("e===========", e.target.file);
 
     var file = e.target.files[0];
-    let r = new FileReader(); //本地预览
+    let r = new FileReader(); 
     r.onload = function () {
-      console.log(r.result); //r.result 即为base64编码
+      console.log(r.result); 
       userinfo.headimg = r.result;
-      setUserinfo({ ...userinfo });
     };
-    r.readAsDataURL(file); //Base64
+    r.readAsDataURL(file);
   }
 
   function uploadPet(e, index) {
     console.log("e===========", e.target.file);
 
     var file = e.target.files[0];
-    let r = new FileReader(); //本地预览
+    let r = new FileReader(); 
     r.onload = function () {
-      console.log(r.result); //r.result 即为base64编码
+      console.log(r.result); 
       userinfo["pet" + index] = r.result;
-      setUserinfo({ ...userinfo });
     };
-    r.readAsDataURL(file); //Base64
+    r.readAsDataURL(file);
   }
 
   return (
     <div className="profile-edit">
-      {/* <div className="profile-edit-row">
-        <div className="profile-edit-row-name">Name:</div>
-        <input
-          type="text"
-          value={name}
-          onChange={(e) => setName(e.target.value)}
-        />
-      </div> */}
       <div className="profile-edit-row">
         <div className="profile-edit-row-name">My Name:</div>
         <input
           type="text"
-          value={userinfo.name}
+          id="username"
+          value={userinfo.username}
           onChange={(e) => {
-            userinfo.name = e.target.value;
-            setUserinfo({ ...userinfo });
-          }}
-        />
-      </div>
-      <div className="profile-edit-row">
-        <div className="profile-edit-row-name">Location</div>
-        <input
-          type="text"
-          value={userinfo.location}
-          onChange={(e) => {
-            userinfo.location = e.target.value;
-            setUserinfo({ ...userinfo });
+            userinfo.username = e.target.value;
+            setUserinfo({ ...userinfo })
           }}
         />
       </div>
@@ -112,19 +82,14 @@ export default function EditableUserProfile({ stored, editCompleteCallback }) {
 
       <div className="profile-edit-row">
         <div className="profile-edit-row-name">
-          <img
-            alt=""
-            style={{ width: 30, height: 30, marginRight: 10, borderRadius: 50 }}
-            src={snap}
-          ></img>
-          Snap
+          Phone number
         </div>
         <input
           type="text"
-          value={userinfo.snap}
+          value={userinfo.contact.phone}
           onChange={(e) => {
-            userinfo.snap = e.target.value;
-            setUserinfo({ ...userinfo });
+            userinfo.contact.phone = e.target.value;
+            setUserinfo({ ...userinfo })
           }}
         />
       </div>
@@ -139,10 +104,10 @@ export default function EditableUserProfile({ stored, editCompleteCallback }) {
         </div>
         <input
           type="text"
-          value={userinfo.facebook}
+           value={userinfo.contact.facebook}
           onChange={(e) => {
-            userinfo.facebook = e.target.value;
-            setUserinfo({ ...userinfo });
+            userinfo.contact.facebook = e.target.value;
+            setUserinfo({ ...userinfo })
           }}
         />
       </div>
@@ -154,14 +119,14 @@ export default function EditableUserProfile({ stored, editCompleteCallback }) {
             style={{ width: 30, height: 30, marginRight: 10, borderRadius: 50 }}
             src={instagram}
           ></img>
-          Facebook
+          Instagram
         </div>
         <input
           type="text"
-          value={userinfo.instagram}
+           value={userinfo.contact.instagram}
           onChange={(e) => {
-            userinfo.instagram = e.target.value;
-            setUserinfo({ ...userinfo });
+            userinfo.contact.instagram = e.target.value;
+            setUserinfo({ ...userinfo })
           }}
         />
       </div>
@@ -180,10 +145,10 @@ export default function EditableUserProfile({ stored, editCompleteCallback }) {
         <div className="profile-edit-row-name">Pet Name:</div>
         <input
           type="text"
-          value={userinfo.petname}
+          value={userinfo.pets[0].name}
           onChange={(e) => {
-            userinfo.petname = e.target.value;
-            setUserinfo({ ...userinfo });
+            userinfo.pets[0].name = e.target.value;
+            setUserinfo({ ...userinfo })
           }}
         />
       </div>
@@ -191,10 +156,10 @@ export default function EditableUserProfile({ stored, editCompleteCallback }) {
         <div className="profile-edit-row-name">Pet Type:</div>
         <input
           type="text"
-          value={userinfo.pettype}
+          value={userinfo.pets[0].type}
           onChange={(e) => {
-            userinfo.pettype = e.target.value;
-            setUserinfo({ ...userinfo });
+            userinfo.pets[0].type = e.target.value;
+            setUserinfo({ ...userinfo })
           }}
         />
       </div>
@@ -202,10 +167,10 @@ export default function EditableUserProfile({ stored, editCompleteCallback }) {
         <div className="profile-edit-row-name">Pet Breed:</div>
         <input
           type="text"
-          value={userinfo.breed}
+          value={userinfo.pets[0].breed}
           onChange={(e) => {
-            userinfo.breed = e.target.value;
-            setUserinfo({ ...userinfo });
+            userinfo.pets[0].breed = e.target.value;
+            setUserinfo({ ...userinfo })
           }}
         />
       </div>
@@ -213,10 +178,10 @@ export default function EditableUserProfile({ stored, editCompleteCallback }) {
         <div className="profile-edit-row-name">Pet Size:</div>
         <input
           type="int"
-          value={userinfo.petSize}
+          value={userinfo.pets[0].size}
           onChange={(e) => {
-            userinfo.petSize = e.target.value;
-            setUserinfo({ ...userinfo });
+            userinfo.pets[0].size = e.target.value;
+            setUserinfo({ ...userinfo })
           }}
         />
       </div>
@@ -224,10 +189,22 @@ export default function EditableUserProfile({ stored, editCompleteCallback }) {
         <div className="profile-edit-row-name">Pet Gender:</div>
         <input
           type="text"
-          value={userinfo.petGender}
+          value={userinfo.pets[0].gender}
           onChange={(e) => {
-            userinfo.petGender = e.target.value;
-            setUserinfo({ ...userinfo });
+            userinfo.pets[0].gender = e.target.value;
+            setUserinfo({ ...userinfo })
+          }}
+        />
+      </div>
+
+      <div className="profile-edit-row">
+        <div className="profile-edit-row-name">Pet Age:</div>
+        <input
+          type="text"
+          value={userinfo.pets[0].age}
+          onChange={(e) => {
+            userinfo.pets[0].age = e.target.value;
+            setUserinfo({ ...userinfo })
           }}
         />
       </div>

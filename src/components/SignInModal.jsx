@@ -78,6 +78,7 @@ const SignInModal = () => {
       let identity_div = document.getElementById("identity_div");
       identity_div.innerHTML = `
           <p> Hello, ${activeUser} </p>
+          <a class="nav-link" href="/profile">Profile</a>
           <a href="signout" class="btn btn-danger" role="button">Log out</a>`;
       alert("Successfully signed in")
       document.getElementById("signInModal").style.display = "none"
