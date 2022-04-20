@@ -3,9 +3,9 @@ import React from "react";
 import { BrowserRouter as Router, Switch, Route } from "react-router-dom";
 import Home from "./components/Home";
 import Navigation from "./components/Navigation";
-import Profile from "./components/profilePage";
+import Profile from "./components/ProfilePage";
 // import FindPets from "./components/FindPets";
-import Posts from "./components/posts";
+import Posts from "./components/Posts";
 
 class App extends React.Component {
   constructor(props) {

@@ -1,4 +1,5 @@
 import React, { useEffect, useState } from "react";
+import {useHistory} from "react-router";
 
 const SignInModal = () => {
   // function setFormMessage(formElement, type, message) {
@@ -13,6 +14,7 @@ const SignInModal = () => {
   // }
   const [activeUser, setActiveUser] = useState("default value")
   useEffect(() => {afterSignIn()}, [activeUser])
+  let history = useHistory();
 
   async function createAccount(e) {
     e.preventDefault()
@@ -43,7 +45,6 @@ const SignInModal = () => {
     }
   }
   
-  
   async function signIn(e) {
     e.preventDefault();
     let email = document.getElementById("signin_email").value
@@ -64,11 +65,13 @@ const SignInModal = () => {
         }
     );
     let statusInfo = await response.json();
+    console.log("Sign in status", statusInfo)
     if(statusInfo.status === "success") {
-      setActiveUser(statusInfo.username)
-      // afterSignIn(statusInfo.username)
+      window.localStorage.setItem("user", statusInfo.user._id)
+      console.log("signinmodal: ", window.localStorage)
+      setActiveUser(statusInfo.user.username)
     } else {
-      alert("Error: ", statusInfo.error)
+      alert("Error: " + statusInfo.error)
     }
   }
 
@@ -78,10 +81,37 @@ const SignInModal = () => {
       let identity_div = document.getElementById("identity_div");
       identity_div.innerHTML = `
           <p> Hello, ${activeUser} </p>
-          <a class="nav-link" href="/profile">Profile</a>
-          <a href="signout" class="btn btn-danger" role="button">Log out</a>`;
+          <button className="btn btn-main" id="logoutbtn">Log out</button>`
+      document.getElementById("logoutbtn").addEventListener('click', signOut);
       alert("Successfully signed in")
       document.getElementById("signInModal").style.display = "none"
+    }
+  }
+
+  async function signOut() {
+    let response = await fetch(
+      "/users/signout", 
+      {
+        method: "POST",
+        headers: {
+          'Content-Type': 'application/json'
+        },
+        mode: 'cors'
+      }
+    );
+    let statusInfo = await response.json();
+    if (statusInfo.status === "success") {
+      window.localStorage.setItem("user", null)
+      console.log(window.localStorage)
+      setActiveUser("default value")
+      document.getElementById("logoutbtn").removeEventListener('click', signOut);
+      let div = document.getElementById("identity_div")
+      div.innerHTML = `
+      <button className="btn btn-main" data-toggle="modal" data-target= '#signInModal'>
+        Sign in
+      </button>`;
+      document.getElementById("signInModal").style.display = "block"
+      history.push("/");
     }
   }
 
@@ -102,7 +132,8 @@ const SignInModal = () => {
   document.addEventListener("DOMContentLoaded", () => {
     const loginForm = document.querySelector("#login");
     const createAccountForm = document.querySelector("#createAccount");
-
+    createAccountForm.addEventListener("submit", createAccount)
+    loginForm.addEventListener("submit", signIn)
     document
       .querySelector("#linkCreateAccount")
       .addEventListener("click", (e) => {
@@ -145,89 +176,89 @@ const SignInModal = () => {
             <h1 className="modal-title mx-auto">Welcome to Pawdy</h1>
           </div>
           <div className="modal-body">
-            <form class="form" id="login" onSubmit={signIn}>
-              <h1 class="form__title">Login With UW Email</h1>
-              <div class="form__message form__message--error"></div>
-              <div class="form__input-group">
-                <label for="fname">UW Email</label>
-                <input type="text" class="form__input" id="signin_email"></input>
-                <div class="form__input-error-message"></div>
+            <form className="form" id="login">
+              <h1 className="form__title">Login With UW Email</h1>
+              <div className="form__message form__message--error"></div>
+              <div className="form__input-group">
+                <label htmlFor="fname">UW Email</label>
+                <input type="text" className="form__input" id="signin_email"></input>
+                <div className="form__input-error-message"></div>
               </div>
-              <div class="form__input-group">
-                <label for="password">Password</label>
+              <div className="form__input-group">
+                <label htmlFor="password">Password</label>
                 <input
                   type="password"
-                  class="form__input"
+                  className="form__input"
                   id="signin_password"
                 ></input>
-                <div class="form__input-error-message"></div>
+                <div className="form__input-error-message"></div>
               </div>
-              <button class="form__button" type="submit">
+              <button className="form__button" type="submit">
                 Sign In
               </button>
-              <p class="form__text">
-                <a href="#" class="form__link">
+              <p className="form__text">
+                <a href="#" className="form__link">
                   Forgot your password?
                 </a>
               </p>
-              <p class="form__text">
-                <a class="form__link" href="./" id="linkCreateAccount">
+              <p className="form__text">
+                <a className="form__link" href="./" id="linkCreateAccount">
                   Don't have an account? Create account
                 </a>
               </p>
             </form>
-            <form class="form form--hidden" id="createAccount" onSubmit={createAccount}>
-              <h1 class="form__title">Create Account</h1>
-              <div class="form__message form__message--error"></div>
-              <div class="form__input-group">
+            <form className="form form--hidden" id="createAccount">
+              <h1 className="form__title">Create Account</h1>
+              <div className="form__message form__message--error"></div>
+              <div className="form__input-group">
                 <input
                   type="text"
                   id="signup_username"
-                  class="form__input"
-                  autofocus
+                  className="form__input"
+                  autoFocus
                   placeholder="Username"
                 ></input>
-                <div class="form__input-error-message"></div>
+                <div className="form__input-error-message"></div>
               </div>
-              <div class="form__input-group">
+              <div className="form__input-group">
                 <input
                   type="text"
-                  class="form__input"
+                  className="form__input"
                   id="signup_email"
-                  autofocus
+                  autoFocus
                   placeholder="Email Address"
                 ></input>
-                <div class="form__input-error-message"></div>
+                <div className="form__input-error-message"></div>
               </div>
-              <div class="form__input-group">
+              <div className="form__input-group">
                 <input
                   id="signup_password"
                   type="password"
-                  class="form__input"
-                  autofocus
+                  className="form__input"
+                  autoFocus
                   placeholder="Password"
                 ></input>
-                <div class="form__input-error-message"></div>
+                <div className="form__input-error-message"></div>
               </div>
-              <div class="form__input-group">
+              <div className="form__input-group">
                 <input
                   id="signup_confirm_password"
                   type="password"
-                  class="form__input"
-                  autofocus
+                  className="form__input"
+                  autoFocus
                   placeholder="Confirm password"
                 ></input>
-                <div class="form__input-error-message"></div>
+                <div className="form__input-error-message"></div>
               </div>
-              <button class="form__button" type="submit">
+              <button className="form__button" type="submit">
                 Submit
               </button>
-              <p class="form__text">
-                <a class="form__link" href="./" id="linkLogin">
+              <p className="form__text">
+                <a className="form__link" href="./" id="linkLogin">
                   Already have an account? Sign in
                 </a>
               </p>
-              {/* <input type="submit" value="Submit" class="form__button"></input> */}
+              {/* <input type="submit" value="Submit" className="form__button"></input> */}
             </form>
           </div>
         </div>

@@ -46,17 +46,18 @@ const Navigation = () => {
                     Post
                   </Link>
                 </li>
-                {/* {loggedIn ? (<></>) : (<></>)} */}
-                <li
-                  id="profile_link"
-                  className={
-                    "nav-item " + (rootPath === "profile" ? "active" : "")
-                  }
-                >
-                  <Link className="nav-link" to="/profile">
-                    Profile
-                  </Link>
-                </li>
+                {window.localStorage.user ? (<>
+                  <li
+                    id="profile_link"
+                    className={
+                      "nav-item " + (rootPath === "profile" ? "active" : "")
+                    }
+                  >
+                    <Link className="nav-link" to="/profile">
+                      Profile
+                    </Link>
+                  </li>
+                </>) : (<></>)}
               </ul>
               <div className="nav-item active" id="identity_div">
                 <button

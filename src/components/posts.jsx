@@ -16,60 +16,54 @@ function closeCreatePostModal() {
   }, 250);
 }
 
+function submitPost () {
+  storePosts()
+  closeCreatePostModal();
+  window.location.reload(false)
+}
+
+async function createPost () {
+    let petsJson
+    try {
+      let response = await fetch('/posts/pets')
+      petsJson = await response.json()
+    } catch (error) {
+      petsJson = {status: "error", error: error}
+    }
+    if(petsJson.status === "success"){
+      console.log("pets", petsJson.pets)
+      let petsOptions = petsJson.pets.map(pet => {
+        return `<option value="${pet.name}">${pet.name}</option>\t`
+      });
+      petsOptions += `<option value="add">Add a pet</option>`
+      document.getElementById("pets_dropdown").innerHTML = petsOptions
+      setTimeout(() => {
+        createPostModal.classList.add("show");
+      }, 25);
+      const createPostModal = document.getElementById("createPostModal");
+      createPostModal.style.display = "block";
+    } else {
+      if(petsJson.error === "not logged in") {
+        // prompt log in
+        alert('You must log in to create a post!')
+        // document.getElementById('signInModal').style.display = "block"
+      } else {
+        alert("Error: " + petsJson.error)
+      }
+    }
+}
+
 const Posts = () => {
   const [page, setPage] = useState(1);
   const [postCardData, setPostCardData] = useState({});
 
   useEffect(() => {
-    fetch(`/api/posts`)
+    fetch(`/posts`)
       .then((response) => response.json())
       .then(function (data) {
         setPostCardData(data);
+        console.log("postcarddata, ", data)
       });
-
-      document.getElementById("submit_post_button").addEventListener("click", (e) => {
-        e.preventDefault()
-        storePosts()
-        closeCreatePostModal();
-      })
-      
-      document.getElementById("create_post_button").addEventListener("click", async (e) => {
-        e.preventDefault()
-          let petsJson
-          try {
-            let response = await fetch('/api/pets')
-            petsJson = await response.json()
-          } catch (error) {
-            petsJson = {status: "error", error: error}
-          }
-          console.log(petsJson)
-          if(petsJson.status === "success"){
-            console.log(petsJson.pets)
-            let petsOptions = petsJson.pets.map(pet => {
-              return `<option value="${pet}">${pet}</option>\t`
-            });
-            document.getElementById("pets_dropdown").innerHTML = petsOptions
-            setTimeout(() => {
-              createPostModal.classList.add("show");
-            }, 25);
-            const createPostModal = document.getElementById("createPostModal");
-            createPostModal.style.display = "block";
-          } else {
-            if(petsJson.error === "not logged in") {
-              // prompt log in
-              alert('You must log in to create a post!')
-              document.getElementById('signInModal').style.display = "block"
-            } else {
-              alert(petsJson.error)
-            }
-          }
-      })
-
-      // clean up function
-      return () => {
-        document.getElementById("create_post_button").removeEventListener("click")
-        document.getElementById("submit_post_button").removeEventListener("click")
-      }
   }, [page])
 
   const postCardElements = [];
@@ -82,8 +76,9 @@ const Posts = () => {
     let cleanEnd = new Date(postCardData[i].end_date).toLocaleDateString();
     postCardElements.push(
       <PostCard
-        pet_name={postCardData[i].pet_name}
-        pet_type={postCardData[i].pet_type}
+        userID={postCardData[i].userID}
+        pet_name={postCardData[i].pet.name}
+        pet_type={postCardData[i].pet.type}
         start_date={cleanStart}
         end_date={cleanEnd}
         description={postCardData[i].description}
@@ -108,7 +103,7 @@ const Posts = () => {
       <div>{postCardElements}</div>
       <Copyright />
       <img
-        id="create_post_button"
+        onClick={createPost}
         className="icon"
         role="button"
         alt="Add a Post"
@@ -127,41 +122,40 @@ const Posts = () => {
               <h1 className="modal-title mx-auto">Create a post</h1>
             </div>
             <div className="modal-body">
-              <div class="form__input-group"> 
-                <label for="pets">Choose a pet:  </label>
+              <div className="form__input-group"> 
+                <label htmlFor="pets">Choose a pet:  </label>
                 <select name="pets" id="pets_dropdown">
-                  <option value="pet 1">pet 1</option>
-                  <option value="volvo">Add a pet</option>
+                  <option value="add">Add a pet</option>
                 </select>
               </div>
-              <div class="form__input-group">
-                <label for="startDate">Start date</label>
-                <input type="date" class="form__input" id="start_date"></input>
-                <div class="form__input-error-message"></div>
+              <div className="form__input-group">
+                <label htmlFor="startDate">Start date</label>
+                <input type="date" className="form__input" id="start_date"></input>
+                <div className="form__input-error-message"></div>
               </div>
-              <div class="form__input-group">
-                <label for="endDate">End date</label>
-                <input type="date" class="form__input" id="end_date"></input>
-                <div class="form__input-error-message"></div>
+              <div className="form__input-group">
+                <label htmlFor="endDate">End date</label>
+                <input type="date" className="form__input" id="end_date"></input>
+                <div className="form__input-error-message"></div>
               </div>
-              {/* <div class="form__input-group">
-                <label for="petPhoto">Pet Photo</label>
-                <input type="file" class="form__input" id="petPhoto"></input>
-                <div class="form__input-error-message"></div>
+              {/* <div className="form__input-group">
+                <label htmlFor="petPhoto">Pet Photo</label>
+                <input type="file" className="form__input" id="petPhoto"></input>
+                <div className="form__input-error-message"></div>
               </div> */}
-              <div class="form__input-group">
-                <label for="img_link">Image Link</label>
-                <input type="text" class="form__input" id="img_link"></input>
-                <div class="form__input-error-message"></div>
+              <div className="form__input-group">
+                <label htmlFor="img_link">Image Link</label>
+                <input type="text" className="form__input" id="img_link"></input>
+                <div className="form__input-error-message"></div>
               </div>
-              <div class="form__input-group">
-                <label for="description">Description</label>
-                <textarea class="form__input" id="description"></textarea>
-                <div class="form__input-error-message"></div>
+              <div className="form__input-group">
+                <label htmlFor="description">Description</label>
+                <textarea className="form__input" id="description"></textarea>
+                <div className="form__input-error-message"></div>
               </div>
               <button
-                id="submit_post_button"
-                class="form__button"
+                onClick={submitPost}
+                className="form__button"
                 type="submit"
                 // onClick={() => {
                 //   setPostCardData([
@@ -188,29 +182,29 @@ const Posts = () => {
       </section>
       <nav className="page-nav" aria-label="Page navigation">
         <div>
-          <ul class="pagination">
-            <li class="page-item">
-              <span class="page-link" onClick={() => setPage(page - 1)}>
+          <ul className="pagination">
+            <li className="page-item">
+              <span className="page-link" onClick={() => setPage(page - 1)}>
                 Previous
               </span>
             </li>
-            <li class="page-item">
-              <span class="page-link" onClick={() => setPage(1)}>
+            <li className="page-item">
+              <span className="page-link" onClick={() => setPage(1)}>
                 1
               </span>
             </li>
-            <li class="page-item">
-              <span class="page-link" onClick={() => setPage(2)}>
+            <li className="page-item">
+              <span className="page-link" onClick={() => setPage(2)}>
                 2
               </span>
             </li>
-            <li class="page-item">
-              <span class="page-link" onClick={() => setPage(3)}>
+            <li className="page-item">
+              <span className="page-link" onClick={() => setPage(3)}>
                 3
               </span>
             </li>
-            <li class="page-item">
-              <span class="page-link" onClick={() => setPage(page + 1)}>
+            <li className="page-item">
+              <span className="page-link" onClick={() => setPage(page + 1)}>
                 Next
               </span>
             </li>
@@ -224,8 +218,7 @@ const Posts = () => {
 async function storePosts() {
   try {
     // document.getElementById("postStatus").innerHTML = "sending data..."
-    let pet_name = document.getElementById("pet_name").value;
-    let pet_type = document.getElementById("pet_type").value;
+    let pet_name = document.getElementById("pets_dropdown").value;
     let start_date = document.getElementById("start_date").value;
     let end_date = document.getElementById("end_date").value;
     let description = document.getElementById("description").value;
@@ -234,7 +227,6 @@ async function storePosts() {
 
     const myData = {
       pet_name: pet_name,
-      pet_type: pet_type,
       description: description,
       start_date: start_date,
       end_date: end_date,
@@ -242,23 +234,21 @@ async function storePosts() {
     };
 
     // console.log(myData)
-    let postPetResponse = await fetch(`/api/posts`, {
+    let postPetResponse = await fetch(`/posts`, {
       method: "POST",
       body: JSON.stringify(myData),
       headers: { "Content-Type": "application/json" },
     });
     let status = await postPetResponse.json();
     if (status.status === "error") {
-      alert("Error: ", status.error);
+      alert("Error: " +  status.error);
     } else {
-      document.getElementById("pet_name").value = "";
-      document.getElementById("pet_type").value = "";
       document.getElementById("description").innerHTML = "";
       document.getElementById("start_date").innerHTML = "";
       document.getElementById("end_date").innerHTML = "";
       document.getElementById("img_link").innerHTML = "";
       alert("successfully uploaded");
-      window.location.href = "/api/posts";
+      // window.location.href = "/posts";
     }
     closeCreatePostModal();
   } catch (error) {

@@ -26,7 +26,7 @@ export default function EditableUserProfile({ stored, editCompleteCallback }) {
       alert("profile saved successfully")
       editCompleteCallback(userinfo);
     } else{
-      alert(statusInfo.error)
+      alert("Error: " + statusInfo.error)
     }
     
   }

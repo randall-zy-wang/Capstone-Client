@@ -9,7 +9,14 @@ import pet4 from "../photos/pet4.jpg";
 import add from "../photos/add.png";
 
 export default function UserProfile({ stored, startEditCallback }) {
-  console.log("stored: ", stored)
+  let loggedInUser = window.localStorage.getItem("user")
+  const url = window.location.href
+  let renderedUser 
+  if(url.endsWith('/profile')) {
+    renderedUser = loggedInUser
+  } else {
+    renderedUser = url.substring(url.indexOf('/profile'))
+  }
   let pet = {}
   if(stored.pets[0] !== null){
     pet = stored.pets[0]
@@ -42,9 +49,12 @@ export default function UserProfile({ stored, startEditCallback }) {
           <span className="profile-row-name">Pet Gender:</span>
           <span className="profile-row-value"> {pet.gender}</span>
         </div>
+        {loggedInUser === renderedUser ? (<>
         <button className="profile-edit-button" onClick={startEditCallback}>
-          Edit Pet
+          Edit
         </button>
+        </>): (<></>)}
+        
       </div>
 
       <div className="profile-con">
@@ -61,7 +71,7 @@ export default function UserProfile({ stored, startEditCallback }) {
 
         <div className="profile-name-c">Contact:</div>
         <div className="profile-icons">
-          {stored.contact.instagram === null ? (<></>) : (<>
+          {stored.contact.instagram == "" || null ? (<></>) : (<>
             <a href={"https://www.instagram.com/" + stored.contact.instagram} target="new">
               <img
                 className="profile-icon"
@@ -70,13 +80,13 @@ export default function UserProfile({ stored, startEditCallback }) {
               ></img>
             </a>
           </>)}
-          {stored.contact.facebook === null ? (<></>) : (<>
+          {stored.contact.facebook == "" || null ? (<></>) : (<>
             <a href={"https://www.facebook.com/" + stored.contact.facebook} target="new">
               <img className="profile-icon" alt={"facebook"} src={facebook}></img>
             </a>
           </>)}
         </div>
-        {stored.contact.phone === null ? (<></>) : (<>
+        {stored.contact.phone == "" || null ? (<></>) : (<>
           <div className="profile-icons">
             <a href= {"tel:+" + stored.contact.phone}>{stored.contact.phone}</a>
           </div>
@@ -153,7 +163,7 @@ export default function UserProfile({ stored, startEditCallback }) {
           <span className="profile-row-value"> {pet.age}</span>
         </div>
         <button className="profile-edit-button" onClick={startEditCallback}>
-          Edit Pet
+          Edit
         </button>
       </div>
     </div>

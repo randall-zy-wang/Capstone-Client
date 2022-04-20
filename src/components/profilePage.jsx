@@ -18,28 +18,29 @@ function randomColor() {
 
 function Profile() {
   const [profileEditMode, setProfileEditMode] = useState(false);
-  // const [petEditMode, setPetEditMode] = useState(false)
   const [userInfo, setUserInfo] = useState({})
   const [loading, setLoading] = useState(true)
     
   useEffect(() => {
+    const url = window.location.href
+    let endpoint = url.substring(url.indexOf('/profile'))
+    console.log(endpoint)
     try {
-      fetch(`/profile/userInfo`)
+      fetch(endpoint)
          .then((response) => response.json())
          .then(function (data) {
             if(data.status === 'success') {
-              console.log("from backend: ", data.userInfo)
               setUserInfo(data.userInfo)
               setLoading(false)
             } else{
-              console.log("error: ", data.error)
+              console.log("Backend got the fetch, but error occured: ", data.error)
+              alert("Error: " + data.error)
             }
          });
    } catch (error) {
      console.log(error)
    }
   }, [])
-  console.log("userInfo: ", userInfo)
 
   // let userinfo = localStorage.getItem("userinfo");
   // if (userinfo) {
