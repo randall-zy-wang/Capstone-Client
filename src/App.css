@@ -49,6 +49,11 @@ h1 {
   background: rgba(255, 155, 0, 0.75);
 }
 
+.btn-danger {
+  color: white;
+  background: rgba(255, 0, 0, 0.75);
+}
+
 .btn:hover {
   color: white;
   text-decoration: underline;
@@ -455,7 +460,7 @@ footer a {
   max-width: 700px;
   margin: auto;
 }
-.profile-wrapper {
+.profile-wrapper-mobile {
   display: flex;
   flex-direction: column;
   align-items: center;
@@ -584,6 +589,17 @@ footer a {
   align-items: center;
   margin-left: 100px;
 }
+
+/* .profile-con-top-pic {
+  display: none;
+} */
+
+/* .profile-wrapper-mobile {
+  display: flex;
+  flex-direction: column;
+  padding: 0px 30px;
+} */
+
 /* Media Queries */
 @media only screen and (min-width: 600px) {
   /* .icon {
@@ -659,13 +675,6 @@ footer a {
   }
 }
 
-.profile-con-top-pic {
-  display: none;
-}
-.profile-wrapper-mobile {
-  display: none;
-}
-/* Media Queries */
 @media only screen and (max-width: 600px) {
   .profile-con-top-pic {
     display: inherit;
@@ -679,9 +688,9 @@ footer a {
     flex-direction: column;
     padding: 0px 30px;
   }
-  .profile-wrapper {
+  /* .profile-wrapper {
     display: none;
-  }
+  } */
   .profile-con {
     margin-left: 0px;
     padding: 30px;

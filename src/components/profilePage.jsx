@@ -1,4 +1,5 @@
 import { useEffect, useState } from "react";
+import {useHistory} from "react-router";
 import EditableUserProfile from "./EditableUserProfile";
 import UserProfile from "./UserProfile";
 import wuyanzu from "../photos/wuyanzu.png";
@@ -12,11 +13,9 @@ import pet3 from "../photos/pet3.jpg";
 import pet4 from "../photos/pet4.jpg";
 import add from "../photos/add.png";
 import Copyright from "./Copyright";
-function randomColor() {
-  return "#" + Math.floor(Math.random() * 16777215).toString(16);
-}
 
 function Profile() {
+  const history = useHistory()
   const [profileEditMode, setProfileEditMode] = useState(false);
   const [userInfo, setUserInfo] = useState({})
   const [loading, setLoading] = useState(true)
@@ -24,7 +23,6 @@ function Profile() {
   useEffect(() => {
     const url = window.location.href
     let endpoint = url.substring(url.indexOf('/profile'))
-    console.log(endpoint)
     try {
       fetch(endpoint)
          .then((response) => response.json())
@@ -35,67 +33,13 @@ function Profile() {
             } else{
               console.log("Backend got the fetch, but error occured: ", data.error)
               alert("Error: " + data.error)
+              history.goBack()
             }
          });
    } catch (error) {
      console.log(error)
    }
   }, [])
-
-  // let userinfo = localStorage.getItem("userinfo");
-  // if (userinfo) {
-  //   userinfo = JSON.parse(userinfo);
-  // } else {
-  //   userinfo = {
-  //     name: "Hongyi Yang",
-  //     color: randomColor(),
-  //     pettype: "Dog",
-  //     petname: "Fishcake",
-  //     breed: "Golden Retriever",
-  //     petSize: "80 lbs",
-  //     petGender: "Boy",
-  //     location: "Seattle, WA",
-  //     headimg: wuyanzu,
-  //     pet1: "",
-  //     pet2: "",
-  //     pet3: "",
-  //     pet4: "",
-  //   };
-  // }
-
-  // const [name, setName] = useState(function () {
-  //   return userinfo.name;
-  // });
-  // const [color, setColor] = useState(userinfo.color);
-  // const [petname, setpetName] = useState(function () {
-  //   return userinfo.petname;
-  // });
-  // const [breed, setBreed] = useState(function () {
-  //   return userinfo.breed;
-  // });
-  // const [petSize, setPetSize] = useState(function () {
-  //   return userinfo.petSize;
-  // });
-  // const [petGender, setPetGender] = useState(function () {
-  //   return userinfo.petGender;
-  // });
-  // const [location, setLocation] = useState(function () {
-  //   return userinfo.location;
-  // });
-
-  // const stored = {
-  //   name,
-  //   color,
-  //   petname,
-  //   breed,
-  //   petSize,
-  //   petGender,
-  //   location,
-  //   pet1,
-  //   pet2,
-  //   pet3,
-  //   pet4,
-  // };
 
   function handleEditComplete(result) {
     console.log("handleEditComplete", result);

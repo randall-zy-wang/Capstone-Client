@@ -1,14 +1,44 @@
-// import { Context } from "../Context";
-import React from "react";
+import React, { useState } from "react";
+import {useHistory} from "react-router";
 import { Link, useLocation } from "react-router-dom";
-
 import SignInModal from "./SignInModal";
-//import ProfileModal from "./ProfileModal";
 import Headroom from "react-headroom";
 
 const Navigation = () => {
-  // const { user } = useContext(Context);
+  const history = useHistory()
+  const initialState = (window.localStorage.userID !== undefined)
+  const [isLoggedIn, setIsLoggedIn] = useState(initialState)
   const rootPath = useLocation().pathname.split("/")[1];
+
+  async function signOut() {
+    let response = await fetch(
+      "/users/signout", 
+      {
+        method: "POST",
+        headers: {
+          'Content-Type': 'application/json'
+        },
+        mode: 'cors'
+      }
+    );
+    let statusInfo = await response.json();
+    if (statusInfo.status === "success") {
+      window.localStorage.removeItem("userID")
+      window.localStorage.removeItem("username")
+      setIsLoggedIn(false)
+      console.log(window.localStorage)
+      alert("Successfully signed out!")
+      history.push("/");
+    } else {
+      alert("Error: " + statusInfo.error)
+    }
+  }
+
+  // this callback function is passed to signInModal so that it can change the "isLoggedIn" state
+  // , so that the nav bar will re-render when user log in/out
+  function handleUserAuth(status){
+    setIsLoggedIn(status)
+  }
 
   return (
     <div>
@@ -46,7 +76,7 @@ const Navigation = () => {
                     Post
                   </Link>
                 </li>
-                {window.localStorage.user ? (<>
+                {isLoggedIn ? (<>
                   <li
                     id="profile_link"
                     className={
@@ -60,19 +90,27 @@ const Navigation = () => {
                 </>) : (<></>)}
               </ul>
               <div className="nav-item active" id="identity_div">
-                <button
-                  className="btn btn-main"
-                  data-toggle="modal"
-                  data-target={"#signInModal"}
-                >
-                  Sign in
-                </button>
+                {isLoggedIn ? (<>
+                  <p> Hello, {window.localStorage.username}!</p>
+                  <button className="btn btn-danger" onClick={signOut}>
+                    Sign out
+                  </button>
+                </>): (<>
+                  <button
+                    className="btn btn-main"
+                    data-toggle="modal"
+                    data-target={"#signInModal"}
+                  >
+                    Sign in
+                  </button>
+                </>)}
+                
               </div>
             </div>
           </nav>
         </div>
       </Headroom>
-      <SignInModal />
+      <SignInModal handleUserAuth={handleUserAuth}/>
     </div>
   );
 };

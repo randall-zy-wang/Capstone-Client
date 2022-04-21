@@ -1,7 +1,6 @@
-import React, { useEffect, useState } from "react";
-import {useHistory} from "react-router";
+import React from "react";
 
-const SignInModal = () => {
+const SignInModal = (props) => {
   // function setFormMessage(formElement, type, message) {
   //   const messageElement = formElement.querySelector(".form__message");
 
@@ -12,9 +11,6 @@ const SignInModal = () => {
   //   );
   //   messageElement.classList.add(`form__message--${type}`);
   // }
-  const [activeUser, setActiveUser] = useState("default value")
-  useEffect(() => {afterSignIn()}, [activeUser])
-  let history = useHistory();
 
   async function createAccount(e) {
     e.preventDefault()
@@ -65,53 +61,18 @@ const SignInModal = () => {
         }
     );
     let statusInfo = await response.json();
-    console.log("Sign in status", statusInfo)
     if(statusInfo.status === "success") {
-      window.localStorage.setItem("user", statusInfo.user._id)
-      console.log("signinmodal: ", window.localStorage)
-      setActiveUser(statusInfo.user.username)
+      // store user information in local storage
+      window.localStorage.setItem("userID", statusInfo.user._id)
+      window.localStorage.setItem("username", statusInfo.user.username)
+      // tell user they are signed in
+      alert("Successfully signed in")
+      // close sign in modal
+      document.getElementById("signInModal").style.display = "none"
+      // rerender nav bar
+      props.handleUserAuth(true)
     } else {
       alert("Error: " + statusInfo.error)
-    }
-  }
-
-  function afterSignIn() {
-    // TO DO: add icon and user profile ...
-    if(activeUser !== "default value"){
-      let identity_div = document.getElementById("identity_div");
-      identity_div.innerHTML = `
-          <p> Hello, ${activeUser} </p>
-          <button className="btn btn-main" id="logoutbtn">Log out</button>`
-      document.getElementById("logoutbtn").addEventListener('click', signOut);
-      alert("Successfully signed in")
-      document.getElementById("signInModal").style.display = "none"
-    }
-  }
-
-  async function signOut() {
-    let response = await fetch(
-      "/users/signout", 
-      {
-        method: "POST",
-        headers: {
-          'Content-Type': 'application/json'
-        },
-        mode: 'cors'
-      }
-    );
-    let statusInfo = await response.json();
-    if (statusInfo.status === "success") {
-      window.localStorage.setItem("user", null)
-      console.log(window.localStorage)
-      setActiveUser("default value")
-      document.getElementById("logoutbtn").removeEventListener('click', signOut);
-      let div = document.getElementById("identity_div")
-      div.innerHTML = `
-      <button className="btn btn-main" data-toggle="modal" data-target= '#signInModal'>
-        Sign in
-      </button>`;
-      document.getElementById("signInModal").style.display = "block"
-      history.push("/");
     }
   }
 
@@ -258,7 +219,6 @@ const SignInModal = () => {
                   Already have an account? Sign in
                 </a>
               </p>
-              {/* <input type="submit" value="Submit" className="form__button"></input> */}
             </form>
           </div>
         </div>

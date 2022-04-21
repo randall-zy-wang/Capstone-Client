@@ -1,13 +1,36 @@
 import React from "react";
 import {useHistory} from "react-router";
-// import deleteIcon from "../photos/icons8-delete-24.png";
+import deleteIcon from "../photos/icons8-delete-24.png";
 
 const PostCard = (props) => {
   const history = useHistory()
 
   function toUserProfile() {
-    history.push('/profile?user='+ props.userID)
+    let endpoint = "/profile"
+    if(props.userID) {
+      endpoint += "?user=" + props.userID
+    }
+    history.push(endpoint)
   }
+
+  async function deletePost() {
+    try {
+      let response = await fetch(`/posts`, {
+        method: "DELETE",
+        body: JSON.stringify({ postID: props.postID }),
+        headers: { "Content-Type": "application/json" },
+      });
+      let responesJSON = await response.json();
+      if (responesJSON.status == "error") {
+        alert("Error:" + responesJSON.error);
+      } else {
+        alert("Successfully deleted your post!")
+        window.location.reload(false) // possibly need to create a state for reload.
+      }
+    } catch (error) {
+      console.log("error:" + error);
+    }
+  } 
 
   return (
     <div className="post-card" key={props.pet_name} onClick={toUserProfile}>
@@ -18,16 +41,16 @@ const PostCard = (props) => {
       </div>
       <div className="post-card-description">Description: {props.description}</div>
       <div className="post-card-action-icon-bar">
-      {/* <button className="btn btn-main post-card-action-icon">
-        View details
-      </button> */}
-        {/* <img
+      {props.renderEdit ? (<>
+        <img
           className="post-card-action-icon"
           role="button"
           alt="Delete"
           src={deleteIcon}
-          onClick={props.onDelete}
-        /> */}
+          onClick={deletePost}
+        />
+      </>): (<></>)}
+      
       </div>
     </div>
   );

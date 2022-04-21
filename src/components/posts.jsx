@@ -1,57 +1,11 @@
 import React, { useState } from "react";
 import Copyright from "./Copyright";
 import PostCard from "./PostCard";
-import closeIcon from "../photos/icons8-close-16.png";
+import CreatePostModal from "./CreatePostModal";
 import plusIcon from "../photos/icons8-plus-64.png";
 import { useEffect } from "react";
-import SignInModal from "./SignInModal";
 
 const MAX_ITEMS_PER_PAGE = 5;
-
-function closeCreatePostModal() {
-  const createPostModal = document.getElementById("createPostModal");
-  createPostModal.classList.remove("show");
-  setTimeout(() => {
-    createPostModal.style.display = "";
-  }, 250);
-}
-
-function submitPost () {
-  storePosts()
-  closeCreatePostModal();
-  window.location.reload(false)
-}
-
-async function createPost () {
-    let petsJson
-    try {
-      let response = await fetch('/posts/pets')
-      petsJson = await response.json()
-    } catch (error) {
-      petsJson = {status: "error", error: error}
-    }
-    if(petsJson.status === "success"){
-      console.log("pets", petsJson.pets)
-      let petsOptions = petsJson.pets.map(pet => {
-        return `<option value="${pet.name}">${pet.name}</option>\t`
-      });
-      petsOptions += `<option value="add">Add a pet</option>`
-      document.getElementById("pets_dropdown").innerHTML = petsOptions
-      setTimeout(() => {
-        createPostModal.classList.add("show");
-      }, 25);
-      const createPostModal = document.getElementById("createPostModal");
-      createPostModal.style.display = "block";
-    } else {
-      if(petsJson.error === "not logged in") {
-        // prompt log in
-        alert('You must log in to create a post!')
-        // document.getElementById('signInModal').style.display = "block"
-      } else {
-        alert("Error: " + petsJson.error)
-      }
-    }
-}
 
 const Posts = () => {
   const [page, setPage] = useState(1);
@@ -62,7 +16,6 @@ const Posts = () => {
       .then((response) => response.json())
       .then(function (data) {
         setPostCardData(data);
-        console.log("postcarddata, ", data)
       });
   }, [page])
 
@@ -97,6 +50,41 @@ const Posts = () => {
     );
   }
 
+  async function createPost () {
+      let petsJson
+      try {
+        let response = await fetch('/posts/pets')
+        petsJson = await response.json()
+      } catch (error) {
+        petsJson = {status: "error", error: error}
+      }
+      if(petsJson.status === "success"){
+        console.log(petsJson);
+        
+        // I have no idea why but these next lines have to exist together to make it work
+        setTimeout(() => {
+          createPostModal.classList.add("show");
+        }, 25);
+        const createPostModal = document.getElementById("createPostModal");
+        createPostModal.style.display = "block";
+
+
+        let petsOptions = petsJson.pets.map(pet => {
+          return `<option value="${pet.name}">${pet.name}</option>\t`
+        });
+        petsOptions += `<option value="add"><a>Add a pet</a></option>`
+        document.getElementById("pets_dropdown").innerHTML = petsOptions
+      } else {
+        if(petsJson.error === "not logged in") {
+          // prompt log in
+          alert('You must log in to create a post!')
+          // document.getElementById('signInModal').style.display = "block"
+        } else {
+          alert("Error: " + petsJson.error)
+        }
+      }
+  }
+
   return (
     <main id="posts">
       <h1 className="post-title">Sitting Posts</h1>
@@ -109,77 +97,7 @@ const Posts = () => {
         alt="Add a Post"
         src={plusIcon}
       />
-      <section className="modal fade" id="createPostModal">
-        <div className="modal-dialog modal-dialog-centered">
-          <div className="modal-content">
-            <div className="modal-header">
-              <img
-                role="button"
-                alt="Close"
-                src={closeIcon}
-                onClick={closeCreatePostModal}
-              />
-              <h1 className="modal-title mx-auto">Create a post</h1>
-            </div>
-            <div className="modal-body">
-              <div className="form__input-group"> 
-                <label htmlFor="pets">Choose a pet:  </label>
-                <select name="pets" id="pets_dropdown">
-                  <option value="add">Add a pet</option>
-                </select>
-              </div>
-              <div className="form__input-group">
-                <label htmlFor="startDate">Start date</label>
-                <input type="date" className="form__input" id="start_date"></input>
-                <div className="form__input-error-message"></div>
-              </div>
-              <div className="form__input-group">
-                <label htmlFor="endDate">End date</label>
-                <input type="date" className="form__input" id="end_date"></input>
-                <div className="form__input-error-message"></div>
-              </div>
-              {/* <div className="form__input-group">
-                <label htmlFor="petPhoto">Pet Photo</label>
-                <input type="file" className="form__input" id="petPhoto"></input>
-                <div className="form__input-error-message"></div>
-              </div> */}
-              <div className="form__input-group">
-                <label htmlFor="img_link">Image Link</label>
-                <input type="text" className="form__input" id="img_link"></input>
-                <div className="form__input-error-message"></div>
-              </div>
-              <div className="form__input-group">
-                <label htmlFor="description">Description</label>
-                <textarea className="form__input" id="description"></textarea>
-                <div className="form__input-error-message"></div>
-              </div>
-              <button
-                onClick={submitPost}
-                className="form__button"
-                type="submit"
-                // onClick={() => {
-                //   setPostCardData([
-                //     ...postCardData,
-                //     {
-                //       title: document.getElementById("petName").value,
-                //       type: "",
-                //       dates:
-                //         document.getElementById("startDate").value +
-                //         " - " +
-                //         document.getElementById("endDate").value,
-                //       description: document.getElementById("description").value,
-                //       image: "",
-                //     },
-                //   ]);
-                //   closeCreatePostModal();
-                // }}
-              >
-                Submit
-              </button>
-            </div>
-          </div>
-        </div>
-      </section>
+      <CreatePostModal />
       <nav className="page-nav" aria-label="Page navigation">
         <div>
           <ul className="pagination">
@@ -214,46 +132,5 @@ const Posts = () => {
     </main>
   );
 };
-
-async function storePosts() {
-  try {
-    // document.getElementById("postStatus").innerHTML = "sending data..."
-    let pet_name = document.getElementById("pets_dropdown").value;
-    let start_date = document.getElementById("start_date").value;
-    let end_date = document.getElementById("end_date").value;
-    let description = document.getElementById("description").value;
-    let img = document.getElementById("img_link").value;
-    // store the image
-
-    const myData = {
-      pet_name: pet_name,
-      description: description,
-      start_date: start_date,
-      end_date: end_date,
-      img: img,
-    };
-
-    // console.log(myData)
-    let postPetResponse = await fetch(`/posts`, {
-      method: "POST",
-      body: JSON.stringify(myData),
-      headers: { "Content-Type": "application/json" },
-    });
-    let status = await postPetResponse.json();
-    if (status.status === "error") {
-      alert("Error: " +  status.error);
-    } else {
-      document.getElementById("description").innerHTML = "";
-      document.getElementById("start_date").innerHTML = "";
-      document.getElementById("end_date").innerHTML = "";
-      document.getElementById("img_link").innerHTML = "";
-      alert("successfully uploaded");
-      // window.location.href = "/posts";
-    }
-    closeCreatePostModal();
-  } catch (error) {
-    console.log("There was an error: " + error);
-  }
-}
 
 export default Posts;
