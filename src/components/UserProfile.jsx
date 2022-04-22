@@ -1,15 +1,24 @@
-import wuyanzu from "../photos/wuyanzu.png";
+import React from "react";
 import PostCard from "./PostCard";
+import CreatePostModal from "./CreatePostModal";
+
+import wuyanzu from "../photos/wuyanzu.png";
 import facebook from "../photos/facebook2.png";
 import instagram from "../photos/instagram.png";
 import plusIcon from "../photos/icons8-plus-64.png";
-import React from "react";
+
 import pet1 from "../photos/pet1.jpg";
 import pet2 from "../photos/pet2.jpg";
 import pet3 from "../photos/pet3.jpg";
 import pet4 from "../photos/pet4.jpg";
 import add from "../photos/add.png";
-import CreatePostModal from "./CreatePostModal";
+
+import { Navigation, Pagination, Autoplay } from 'swiper';
+import { Swiper, SwiperSlide } from 'swiper/react';
+import 'swiper/css';
+import 'swiper/css/navigation';
+import 'swiper/css/pagination';
+import 'swiper/css/autoplay';
 
 export default function UserProfile({ stored, startEditCallback }) {
   const url = window.location.href
@@ -24,8 +33,10 @@ export default function UserProfile({ stored, startEditCallback }) {
   let isOwnProfile = (loggedInUser === renderedUser)
 
   let pet = {}
-  if(stored.pets[0] !== null){
+  let hasPet = false
+  if(stored.pets[0].name){
     pet = stored.pets[0]
+    hasPet = true
   }
 
   let cleanStart, cleanEnd;
@@ -70,155 +81,147 @@ export default function UserProfile({ stored, startEditCallback }) {
 
   return (
     <div className="profile-container">
-
-      {/* <div className="profile-wrapper">
+      <div className="profile-wrapper">
         <img
           className="profile-pic"
           alt={"headshot"}
           src={stored.headimg || wuyanzu}
         ></img>
-        <div className="profile-row">
-          <span className="profile-row-name">Pet Type:</span>
-          <span className="profile-row-value"> {pet.type}</span>
-        </div>
-        <div className="profile-row">
-          <span className="profile-row-name">Pet Name:</span>
-          <span className="profile-row-value"> {pet.name}</span>
-        </div>
-        <div className="profile-row">
-          <span className="profile-row-name">Pet Breed:</span>
-          <span className="profile-row-value"> {pet.breed}</span>
-        </div>
-        <div className="profile-row">
-          <span className="profile-row-name">Pet Size:</span>
-          <span className="profile-row-value"> {pet.size}</span>
-        </div>
-        <div className="profile-row">
-          <span className="profile-row-name">Pet Gender:</span>
-          <span className="profile-row-value"> {pet.gender}</span>
-        </div>
+
+        {hasPet ? (<>
+          <div className="profile-row">
+            <span className="profile-row-name">Pet Type:</span>
+            <span className="profile-row-value"> {pet.type}</span>
+          </div>
+          <div className="profile-row">
+            <span className="profile-row-name">Pet Name:</span>
+            <span className="profile-row-value"> {pet.name}</span>
+          </div>
+          <div className="profile-row">
+            <span className="profile-row-name">Pet Breed:</span>
+            <span className="profile-row-value"> {pet.breed}</span>
+          </div>
+          <div className="profile-row">
+            <span className="profile-row-name">Pet Size:</span>
+            <span className="profile-row-value"> {pet.size}</span>
+          </div>
+          <div className="profile-row">
+            <span className="profile-row-name">Pet Gender:</span>
+            <span className="profile-row-value"> {pet.gender}</span>
+          </div>
+          <div className="profile-row">
+            <span className="profile-row-name">Pet Age:</span>
+            <span className="profile-row-value"> {pet.age}</span>
+          </div>
+        </>) : (<></>)}
+        
         {loggedInUser === renderedUser ? (<>
         <button className="profile-edit-button" onClick={startEditCallback}>
           Edit
         </button>
         </>): (<></>)}
-        
-      </div> */}
-          
+      </div>
+      
       <div className="profile-con">
-        <div className="profile-con-top">
-          <img
-            className="profile-con-top-pic"
-            alt={"headshot"}
-            src={stored.headimg || wuyanzu}
-          ></img>
-          <div>
-            <div className="profile-name">{stored.username}</div>
-          </div>
-        </div>
 
-        <div className="profile-name-c">Contact:</div>
-        <div className="profile-icons">
-          {stored.contact.instagram == "" || null ? (<></>) : (<>
-            <a href={"https://www.instagram.com/" + stored.contact.instagram} target="new">
-              <img
-                className="profile-icon"
-                alt={"instagram"}
-                src={instagram}
-              ></img>
-            </a>
-          </>)}
-          {stored.contact.facebook == "" || null ? (<></>) : (<>
-            <a href={"https://www.facebook.com/" + stored.contact.facebook} target="new">
-              <img className="profile-icon" alt={"facebook"} src={facebook}></img>
-            </a>
-          </>)}
+      <div className="profile-con-top">
+        <img
+          className="profile-con-top-pic"
+          alt={"headshot"}
+          src={stored.headimg || wuyanzu}
+        ></img>
+        <div>
+          <div className="profile-name">{stored.username}</div>
         </div>
-        {stored.contact.phone == "" || null ? (<></>) : (<>
-          <div className="profile-icons">
-            <a href= {"tel:+" + stored.contact.phone}>{stored.contact.phone}</a>
-          </div>
-        </>)}
-
-        {pet === {} ? (<></>) : (<><div className="profile-name-p">Pet photos:</div>
-        <div className="pet-photos">
-          <div className="pet-photos-sub">
-            {stored.pet1 ? (
-              <img
-                className="pet-icon"
-                alt={"pet photo1"}
-                src={stored.pet1}
-              ></img>
-            ) : (
-              ""
-            )}
-            {stored.pet2 ? (
-              <img
-                className="pet-icon"
-                alt={"pet photo2"}
-                src={stored.pet2}
-              ></img>
-            ) : (
-              ""
-            )}
-          </div>
-          <div className="pet-photos-sub">
-            {stored.pet3 ? (
-              <img
-                className="pet-icon"
-                alt={"pet photo3"}
-                src={stored.pet3}
-              ></img>
-            ) : (
-              ""
-            )}
-            {stored.pet4 ? (
-              <img
-                className="pet-icon"
-                alt={"pet photo4"}
-                src={stored.pet4}
-              ></img>
-            ) : (
-              ""
-            )}
-          </div>
-          {/* <div className="add-icon">
-            <img className="add-icon-img" alt={"add icon"} src={add}></img>
-          </div> */}
-        </div></>)}
-        
       </div>
 
-      {pet === {} ? (<></>) : (<><div className="profile-wrapper-mobile">
-        <div className="profile-row">
-          <span className="profile-row-name">Pet info:</span>
+      <div className="profile-name-c">Contact:</div>
+      <div className="profile-icons">
+        {stored.contact.instagram == "" || null ? (<></>) : (<>
+          <a href={"https://www.instagram.com/" + stored.contact.instagram} target="new">
+            <img
+              className="profile-icon"
+              alt={"instagram"}
+              src={instagram}
+            ></img>
+          </a>
+        </>)}
+        {stored.contact.facebook == "" || null ? (<></>) : (<>
+          <a href={"https://www.facebook.com/" + stored.contact.facebook} target="new">
+            <img className="profile-icon" alt={"facebook"} src={facebook}></img>
+          </a>
+        </>)}
+      </div>
+      {stored.contact.phone == "" || null ? (<></>) : (<>
+        <div className="profile-icons">
+          <a href= {"tel:+" + stored.contact.phone}>{stored.contact.phone}</a>
         </div>
-        <div className="profile-row">
-          <span className="profile-row-name">My pet:</span>
-          <span className="profile-row-value"> {pet.name}</span>
-        </div>
-        <div className="profile-row">
-          <span className="profile-row-name">Pet Breed:</span>
-          <span className="profile-row-value"> {pet.breed}</span>
-        </div>
-        <div className="profile-row">
-          <span className="profile-row-name">Pet Size:</span>
-          <span className="profile-row-value"> {pet.size}</span>
-        </div>
-        <div className="profile-row">
-          <span className="profile-row-name">Pet Gender:</span>
-          <span className="profile-row-value"> {pet.gender}</span>
-        </div>
-        <div className="profile-row">
-          <span className="profile-row-name">Pet Age:</span>
-          <span className="profile-row-value"> {pet.age}</span>
-        </div>
-        {isOwnProfile ? (<>
-        <button className="profile-edit-button" onClick={startEditCallback}>
-          Edit
-        </button>
-        </>): (<></>)}
-      </div></>)}
+      </>)}
+
+        {hasPet ? (<>
+          
+          <div className="pet-photos">
+        
+            <div className="swiper-container">
+              <Swiper
+                modules={[Navigation, Pagination, Autoplay]}
+                spaceBetween={50}
+                slidesPerView={1}
+                pagination={{ clickable: true }}
+                autoplay={{ autoplay: true, delay: 2000 }}
+              >
+                <SwiperSlide>
+                  <div className="mask">
+                    <img className="content" src={stored.pet1 ? stored.pet1 : pet1} alt={"pet photo1"} style={{ width: "100%" }} />
+                    <div className="mask-content">
+                      <div className="pet-name">{stored.petname}</div>
+                      <div className="pet-breed">{stored.breed}</div>
+                      <div className="pet-size">{stored.petSize}</div>
+                    </div>
+                  </div>
+                  <div className="photo-desc">{stored.bio}</div>
+                </SwiperSlide>
+                <SwiperSlide>
+                  <div className="mask">
+                    <img className="content" src={stored.pet2 ? stored.pet2 : pet2} alt={"pet photo2"} style={{ width: "100%" }} />
+                    <div className="mask-content">
+                      <div className="pet-name">{stored.petname}</div>
+                      <div className="pet-breed">{stored.breed}</div>
+                      <div className="pet-size">{stored.petSize}</div>
+                    </div>
+                  </div>
+                  <div className="photo-desc">{stored.bio}</div>
+                </SwiperSlide>
+                <SwiperSlide>
+                  <div className="mask">
+                    <img className="content" src={stored.pet3 ? stored.pet3 : pet3} alt={"pet photo3"} style={{ width: "100%" }} />
+                    <div className="mask-content">
+                      <div className="pet-name">{stored.petname}</div>
+                      <div className="pet-breed">{stored.breed}</div>
+                      <div className="pet-size">{stored.petSize}</div>
+                    </div>
+                  </div>
+                  <div className="photo-desc">{stored.bio}</div>
+                </SwiperSlide>
+                <SwiperSlide>
+                  <div className="mask">
+                    <img className="content" src={stored.pet4 ? stored.pet4 : pet4} alt={"pet photo4"} style={{ width: "100%" }} />
+                    <div className="mask-content">
+                      <div className="pet-name">{stored.petname}</div>
+                      <div className="pet-breed">{stored.breed}</div>
+                      <div className="pet-size">{stored.petSize}</div>
+                    </div>
+                  </div>
+                  <div className="photo-desc">{stored.bio}</div>
+                </SwiperSlide>
+              </Swiper>
+            </div>
+
+          </div>
+
+        </>) : (<></>)}
+        
+      </div>
           
       {/* change to multiple posts later */}
       {stored.posts.length > 0 ? (<>
