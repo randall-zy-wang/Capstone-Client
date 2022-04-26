@@ -647,6 +647,25 @@ footer a {
   align-items: center;
   margin-left: 100px;
 }
+
+.page-link {
+  color: #ff9b00;
+}
+.page-item:last-child .page-link {
+  border-top-right-radius: 1rem;
+  border-bottom-right-radius: 1rem;
+}
+.page-item:first-child .page-link {
+  margin-left: 0;
+  border-top-left-radius: 1rem;
+  border-bottom-left-radius: 1rem;
+}
+
+.post-title {
+  margin-top: 35px;
+  margin-bottom: 25px;
+}
+
 /* Media Queries */
 @media only screen and (min-width: 600px) {
   /* .icon {
@@ -766,5 +785,8 @@ footer a {
   }
   .profile-name-c {
     display: none;
+  }
+  .post-title {
+    margin-top: 0px;
   }
 }
