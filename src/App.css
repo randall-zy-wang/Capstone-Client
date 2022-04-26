@@ -421,6 +421,13 @@ footer a {
   text-align: left;
   font-size: 16px;
 }
+
+.profile-name-post {
+  margin-bottom: 10px;
+  font-weight: bold;
+  font-size: 16px;
+  margin-top: 20px;
+}
 .profile-icons {
   margin-bottom: 20px;
   display: flex;
@@ -428,8 +435,8 @@ footer a {
   justify-content: center;
 }
 .profile-icon {
-  width: 30px;
-  height: 30px;
+  width: 50px;
+  height: 50px;
   object-fit: contain;
 }
 .profile-container {
@@ -510,27 +517,27 @@ footer a {
   align-items: center;
   justify-content: center;
 }
-.swiper-container{
+.swiper-container {
   width: 250px;
 }
-.swiper-pagination-bullet{
+.swiper-pagination-bullet {
   width: 50px !important;
   height: 3px !important;
-  background: #F8F9F9 !important;
+  background: #f8f9f9 !important;
   border-radius: 2px !important;
 }
-.swiper-pagination-bullet-active{
+.swiper-pagination-bullet-active {
   background: #fff !important;
 }
-.swiper-pagination-horizontal{
+.swiper-pagination-horizontal {
   bottom: 0 !important;
   top: 10px;
 }
-.mask{
+.mask {
   position: relative;
   display: block;
 }
-.mask .content{
+.mask .content {
   border-radius: 8px;
   height: 333px;
 }
@@ -542,10 +549,10 @@ footer a {
   text-align: left;
   padding: 8px;
   word-break: break-all;
-  text-overflow:ellipsis;
-  overflow:hidden;
+  text-overflow: ellipsis;
+  overflow: hidden;
 }
-.mask-content{
+.mask-content {
   position: absolute;
   top: 0;
   left: 0;
@@ -561,10 +568,10 @@ footer a {
   font-size: 24px;
   font-weight: bold;
 }
-.mask-content .pet-breed{
+.mask-content .pet-breed {
   font-size: 14px;
 }
-.mask-content .pet-size{
+.mask-content .pet-size {
   font-size: 14px;
 }
 .add-icon-img {
@@ -751,7 +758,13 @@ footer a {
   }
   .edit-btn-container .edit-button {
     font-size: 20px;
-    color: #E9C645;
+    color: #e9c645;
     font-weight: bold;
+  }
+  .profile-name-post {
+    margin-top: -20px;
+  }
+  .profile-name-c {
+    display: none;
   }
 }
