@@ -48,7 +48,8 @@ const SignInModal = (props) => {
     let loginData = {
         email: email,
         password: password
-    } 
+    }
+    console.log(loginData)
     let response = await fetch(
         "/users/signin",
         {
@@ -61,6 +62,7 @@ const SignInModal = (props) => {
         }
     );
     let statusInfo = await response.json();
+    console.log(statusInfo)
     if(statusInfo.status === "success") {
       // store user information in local storage
       window.localStorage.setItem("userID", statusInfo.user._id)
@@ -69,7 +71,7 @@ const SignInModal = (props) => {
       alert("Successfully signed in")
       // close sign in modal
       document.getElementById("signInModal").style.display = "none"
-      // rerender nav bar
+      // re-render nav bar
       props.handleUserAuth(true)
     } else {
       alert("Error: " + statusInfo.error)
@@ -93,8 +95,6 @@ const SignInModal = (props) => {
   document.addEventListener("DOMContentLoaded", () => {
     const loginForm = document.querySelector("#login");
     const createAccountForm = document.querySelector("#createAccount");
-    // createAccountForm.addEventListener("submit", createAccount)
-    // loginForm.addEventListener("submit", signIn)
     document
       .querySelector("#linkCreateAccount")
       .addEventListener("click", (e) => {
