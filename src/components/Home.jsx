@@ -11,10 +11,9 @@ const Home = () => {
           <div id="home-caption">
             <h1>Pawdy, the pet sitting designed for UW Huskies.</h1>
             <p>
-              Ut enim ad minim veniam, quis nostrud exercitation ullamco laboris
-              nisi ut aliquip ex ea commodo consequat. Duis aute irure dolor in
-              reprehenderit in voluptate velit esse cillum dolore eu fugiat
-              nulla pariatur.
+              Get your pet sitted today! Our mission is to help UW pet owners
+              find afford and reliable in network pet sittiing on demand. Join
+              us today to check out all the cute pets waiting to be sitted!
             </p>
             <Link to="/posts">
               <button className="btn btn-main">Explore More</button>
