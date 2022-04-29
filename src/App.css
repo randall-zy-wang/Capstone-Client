@@ -8,8 +8,8 @@
   min-height: 100vh;
 }
 
-html { 
-  overflow-y: scroll; 
+html {
+  overflow-y: scroll;
 }
 
 body {
@@ -288,8 +288,8 @@ footer em {
 }
 
 .post-card {
-  --length: 159.49px;
-  --radius: 10px;
+  --length: 170px;
+  --radius: 15px;
 
   background-color: white;
   border: 1px solid rgba(0, 0, 0, 0.1);
@@ -364,7 +364,8 @@ footer em {
 .SideProfile {
   margin-top: 30px;
 }
-.profile-edit-button, .edit-button {
+.profile-edit-button,
+.edit-button {
   background-color: rgba(255, 155, 0, 0.75);
   border: none;
   color: white;
@@ -803,5 +804,12 @@ span {
   }
   .post-title {
     margin-top: 0px;
+  }
+  .post-card-description {
+    display: none;
+  }
+  .post-card-subtitle {
+    margin-top: 35px;
+    margin-bottom: 35px;
   }
 }

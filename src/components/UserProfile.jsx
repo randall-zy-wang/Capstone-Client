@@ -21,14 +21,14 @@ import "swiper/css/pagination";
 import "swiper/css/autoplay";
 
 export default function UserProfile({ stored, startEditCallback }) {
-  const url = window.location.href
-  console.log(stored)
-  let loggedInUser = window.localStorage.getItem("userID")
-  let renderedUser 
-  if(url.endsWith('/profile')) {
-    renderedUser = loggedInUser
+  const url = window.location.href;
+  console.log(stored);
+  let loggedInUser = window.localStorage.getItem("userID");
+  let renderedUser;
+  if (url.endsWith("/profile")) {
+    renderedUser = loggedInUser;
   } else {
-    renderedUser = url.substring(url.indexOf('user=') + 5)
+    renderedUser = url.substring(url.indexOf("user=") + 5);
   }
   let isOwnProfile = loggedInUser === renderedUser;
 
@@ -38,7 +38,7 @@ export default function UserProfile({ stored, startEditCallback }) {
     pet = stored.pets[0];
     hasPet = true;
   }
-  console.log(pet)
+  console.log(pet);
   let cleanStart, cleanEnd;
   if (stored.posts.length > 0) {
     cleanStart = new Date(stored.posts[0].start_date).toLocaleDateString();
@@ -88,39 +88,43 @@ export default function UserProfile({ stored, startEditCallback }) {
             src={stored.headimg || wuyanzu}
           ></img>
 
-        {hasPet ? (<>
-          <div className="profile-row">
-            <span className="profile-row-name">Pet Type:</span>
-            <span className="profile-row-value"> {pet.type}</span>
-          </div>
-          <div className="profile-row">
-            <span className="profile-row-name">Pet Name:</span>
-            <span className="profile-row-value"> {pet.name}</span>
-          </div>
-          <div className="profile-row">
-            <span className="profile-row-name">Pet Breed:</span>
-            <span className="profile-row-value"> {pet.breed}</span>
-          </div>
-          <div className="profile-row">
-            <span className="profile-row-name">Pet Size:</span>
-            <span className="profile-row-value"> {pet.size}</span>
-          </div>
-          <div className="profile-row">
-            <span className="profile-row-name">Pet Gender:</span>
-            <span className="profile-row-value"> {pet.gender}</span>
-          </div>
-          <div className="profile-row">
-            <span className="profile-row-name">Pet Age:</span>
-            <span className="profile-row-value"> {pet.age}</span>
-          </div>
-          <div className="profile-row">
-            <span className="profile-row-name">Pet Description:</span>
-            <span className="profile-row-value"> {pet.bio}</span>
-          </div>
-        </>) : (<></>)}
-      </div>
-      
-      <div className="profile-con">
+          {hasPet ? (
+            <>
+              <div className="profile-row">
+                <span className="profile-row-name">Pet Type:</span>
+                <span className="profile-row-value"> {pet.type}</span>
+              </div>
+              <div className="profile-row">
+                <span className="profile-row-name">Pet Name:</span>
+                <span className="profile-row-value"> {pet.name}</span>
+              </div>
+              <div className="profile-row">
+                <span className="profile-row-name">Pet Breed:</span>
+                <span className="profile-row-value"> {pet.breed}</span>
+              </div>
+              <div className="profile-row">
+                <span className="profile-row-name">Pet Size:</span>
+                <span className="profile-row-value"> {pet.size}</span>
+              </div>
+              <div className="profile-row">
+                <span className="profile-row-name">Pet Gender:</span>
+                <span className="profile-row-value"> {pet.gender}</span>
+              </div>
+              <div className="profile-row">
+                <span className="profile-row-name">Pet Age:</span>
+                <span className="profile-row-value"> {pet.age}</span>
+              </div>
+              <div className="profile-row">
+                <span className="profile-row-name">Pet Description:</span>
+                <span className="profile-row-value"> {pet.bio}</span>
+              </div>
+            </>
+          ) : (
+            <></>
+          )}
+        </div>
+
+        <div className="profile-con">
           <div className="profile-con-top">
             <img
               className="profile-con-top-pic"
@@ -199,7 +203,7 @@ export default function UserProfile({ stored, startEditCallback }) {
                           style={{ width: "100%" }}
                         />
                         <div className="mask-content">
-                        <div className="pet-name">{pet.name}</div>
+                          <div className="pet-name">{pet.name}</div>
                           <div className="pet-breed">{pet.breed}</div>
                           <div className="pet-size">{pet.petSize}</div>
                         </div>
@@ -215,7 +219,7 @@ export default function UserProfile({ stored, startEditCallback }) {
                           style={{ width: "100%" }}
                         />
                         <div className="mask-content">
-                        <div className="pet-name">{pet.name}</div>
+                          <div className="pet-name">{pet.name}</div>
                           <div className="pet-breed">{pet.breed}</div>
                           <div className="pet-size">{pet.petSize}</div>
                         </div>
@@ -231,7 +235,7 @@ export default function UserProfile({ stored, startEditCallback }) {
                           style={{ width: "100%" }}
                         />
                         <div className="mask-content">
-                        <div className="pet-name">{pet.name}</div>
+                          <div className="pet-name">{pet.name}</div>
                           <div className="pet-breed">{pet.breed}</div>
                           <div className="pet-size">{pet.petSize}</div>
                         </div>
@@ -264,13 +268,17 @@ export default function UserProfile({ stored, startEditCallback }) {
         </div>
       </div>
 
-      {isOwnProfile ? (<>
-        <div className="edit-btn-container">
-          <div className="edit-button" onClick={startEditCallback}>
-            Edit
+      {isOwnProfile ? (
+        <>
+          <div className="edit-btn-container">
+            <div className="edit-button" onClick={startEditCallback}>
+              Edit
+            </div>
           </div>
-        </div>
-      </>): (<></>)}
+        </>
+      ) : (
+        <></>
+      )}
 
       <div className="profile-con">
         {stored.posts.length > 0 ? (
