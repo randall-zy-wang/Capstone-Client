@@ -26,7 +26,6 @@ const Navigation = () => {
       window.localStorage.removeItem("userID")
       window.localStorage.removeItem("username")
       setIsLoggedIn(false)
-      console.log(window.localStorage)
       alert("Successfully signed out!")
       history.push("/");
     } else {

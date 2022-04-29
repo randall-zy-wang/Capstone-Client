@@ -59,26 +59,22 @@ const Posts = () => {
         petsJson = {status: "error", error: error}
       }
       if(petsJson.status === "success"){
-        console.log(petsJson);
-        
         // I have no idea why but these next lines have to exist together to make it work
         setTimeout(() => {
           createPostModal.classList.add("show");
         }, 25);
         const createPostModal = document.getElementById("createPostModal");
         createPostModal.style.display = "block";
-
+        // ends here
 
         let petsOptions = petsJson.pets.map(pet => {
-          return `<option value="${pet.name}">${pet.name}</option>\t`
+          return `<option value="${pet.name}">${pet.name}</option>`
         });
-        petsOptions += `<option value="add"><a>Add a pet</a></option>`
         document.getElementById("pets_dropdown").innerHTML = petsOptions
       } else {
         if(petsJson.error === "not logged in") {
-          // prompt log in
           alert('You must log in to create a post!')
-          // document.getElementById('signInModal').style.display = "block"
+          // prompt log in
         } else {
           alert("Error: " + petsJson.error)
         }
@@ -129,7 +125,9 @@ const Posts = () => {
           </ul>
         </div>
       </nav>
+      
     </main>
+    
   );
 };
 

@@ -1,43 +1,54 @@
 import React from "react";
+import {useHistory} from "react-router";
 
 const SignInModal = (props) => {
-  // function setFormMessage(formElement, type, message) {
-  //   const messageElement = formElement.querySelector(".form__message");
-
-  //   messageElement.textContent = message;
-  //   messageElement.classList.remove(
-  //     "form__message--success",
-  //     "form__message--error"
-  //   );
-  //   messageElement.classList.add(`form__message--${type}`);
-  // }
+  const history = useHistory()
 
   async function createAccount(e) {
     e.preventDefault()
-    // to do
+    
+    let readyForFetch = true
     let username = document.getElementById('signup_username').value;
-    let password = document.getElementById('signup_password').value;
     let email = document.getElementById('signup_email').value;
-  
-    const myData = {
-      username: username,
-      email: email,
-      password: password
+    let password = document.getElementById('signup_password').value;
+    let confirmPassword = document.getElementById('signup_confirm_password').value
+    
+    if(!username) {
+      document.querySelector(".form__message2").innerHTML = "Please enter a username"
+      readyForFetch = false
+    } else if(!email || !email.endsWith("@uw.edu")) {
+      document.querySelector(".form__message2").textContent = "Please use your UW email"
+      readyForFetch = false
+    } else if(password.length < 6) {
+      document.querySelector(".form__message2").textContent = "Password must be at least 6 characters long"
+      readyForFetch = false
+    } else if(confirmPassword.length < 6 || confirmPassword !== password) {
+      document.querySelector(".form__message2").textContent = "Your passwords do not match. Please try again."
+      readyForFetch = false
     }
-  
-    let postPetResponse = await fetch(`/users/signup`,
-    {method: "POST", body: JSON.stringify(myData), headers: {'Content-Type': 'application/json'}, mode: "cors"}
-    )
-    let status = await postPetResponse.json();
-    console.log(status.status)
-    if(status.status === "success"){
-      document.getElementById("signup_username").value = "";
-      document.getElementById("signup_email").value = "";
-      document.getElementById("signup_password").value = "";
-      document.getElementById("signup_confirm_password").value = "";
-      alert("Successfully registered!")
-    } else {
-      alert("Error:" + status.error);
+    
+    if(readyForFetch) {
+      const myData = {
+        username: username,
+        email: email,
+        password: password
+      }
+    
+      let postPetResponse = await fetch(`/users/signup`,
+      {method: "POST", body: JSON.stringify(myData), headers: {'Content-Type': 'application/json'}, mode: "cors"}
+      )
+      let status = await postPetResponse.json();
+      if(status.status === "success"){
+        document.getElementById("signup_username").value = "";
+        document.getElementById("signup_email").value = "";
+        document.getElementById("signup_password").value = "";
+        document.getElementById("signup_confirm_password").value = "";
+        alert(status.message)
+        document.querySelector("#login").classList.remove("form--hidden");
+        document.querySelector("#createAccount").classList.add("form--hidden");
+      } else{
+        document.querySelector(".form__message2").textContent = "Error: " + status.message
+      }
     }
   }
   
@@ -49,7 +60,6 @@ const SignInModal = (props) => {
         email: email,
         password: password
     }
-    console.log(loginData)
     let response = await fetch(
         "/users/signin",
         {
@@ -62,19 +72,24 @@ const SignInModal = (props) => {
         }
     );
     let statusInfo = await response.json();
-    console.log(statusInfo)
     if(statusInfo.status === "success") {
+      document.querySelector(".form__message").textContent = ""
       // store user information in local storage
       window.localStorage.setItem("userID", statusInfo.user._id)
       window.localStorage.setItem("username", statusInfo.user.username)
+
+      console.log(localStorage)
       // tell user they are signed in
       alert("Successfully signed in")
       // close sign in modal
       document.getElementById("signInModal").style.display = "none"
       // re-render nav bar
       props.handleUserAuth(true)
+      if(statusInfo.user.isFirstTime) {
+        history.push('/profile')
+      }
     } else {
-      alert("Error: " + statusInfo.error)
+      document.querySelector(".form__message").textContent = "Error: " + statusInfo.message
     }
   }
 
@@ -139,7 +154,7 @@ const SignInModal = (props) => {
           <div className="modal-body">
             <form className="form" id="login" onSubmit={signIn}>
               <h1 className="form__title">Login With UW Email</h1>
-              <div className="form__message form__message--error"></div>
+              <span className="form__message"></span>
               <div className="form__input-group">
                 <label htmlFor="fname">UW Email</label>
                 <input type="text" className="form__input" id="signin_email"></input>
@@ -168,9 +183,9 @@ const SignInModal = (props) => {
                 </a>
               </p>
             </form>
-            <form className="form form--hidden" id="createAccount" onSubmit={createAccount}>
+            <form className="form form--hidden" id="createAccount">
               <h1 className="form__title">Create Account</h1>
-              <div className="form__message form__message--error"></div>
+              <span className="form__message2"></span>
               <div className="form__input-group">
                 <input
                   type="text"
@@ -211,7 +226,7 @@ const SignInModal = (props) => {
                 ></input>
                 <div className="form__input-error-message"></div>
               </div>
-              <button className="form__button" type="submit">
+              <button className="form__button" type="submit" onClick={createAccount}>
                 Submit
               </button>
               <p className="form__text">

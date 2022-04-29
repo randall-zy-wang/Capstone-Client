@@ -11,12 +11,6 @@ const CreatePostModal = () => {
         }, 250);
     } 
 
-    function submitPost () {
-        storePosts()
-        closeCreatePostModal();
-        window.location.reload(false)
-    }
-
     async function storePosts() {
         try {
           // document.getElementById("postStatus").innerHTML = "sending data..."
@@ -26,34 +20,44 @@ const CreatePostModal = () => {
           let description = document.getElementById("description").value;
           let img = document.getElementById("img_link").value;
           // store the image
-      
-          const myData = {
-            pet_name: pet_name,
-            description: description,
-            start_date: start_date,
-            end_date: end_date,
-            img: img,
-          };
-          let postPetResponse = await fetch(`/posts`, {
-            method: "POST",
-            body: JSON.stringify(myData),
-            headers: { "Content-Type": "application/json" },
-          });
-          let status = await postPetResponse.json();
-          if (status.status === "error") {
-            alert("Error: " +  status.error);
+          
+          if(pet_name === "add") {
+            document.getElementById("create_post_message").textContent = "Please add a pet in your profile!"
+          } else if(end_date < start_date) {
+            document.getElementById("create_post_message").textContent = "Please enter correct dates."
           } else {
-            document.getElementById("description").innerHTML = "";
-            document.getElementById("start_date").innerHTML = "";
-            document.getElementById("end_date").innerHTML = "";
-            document.getElementById("img_link").innerHTML = "";
-            alert("Successfully uploaded!");
+            const myData = {
+                pet_name: pet_name,
+                description: description,
+                start_date: start_date,
+                end_date: end_date,
+                img: img,
+              };
+              let postPetResponse = await fetch(`/posts`, {
+                method: "POST",
+                body: JSON.stringify(myData),
+                headers: { "Content-Type": "application/json" },
+              });
+              let status = await postPetResponse.json();
+              if (status.status === "error") {
+                alert("Error: " +  status.error);
+              } else {
+                document.getElementById("description").innerHTML = "";
+                document.getElementById("start_date").innerHTML = "";
+                document.getElementById("end_date").innerHTML = "";
+                document.getElementById("img_link").innerHTML = "";
+                alert("Successfully uploaded!");
+                closeCreatePostModal();
+                window.location.reload(false)
+              }
+              closeCreatePostModal();
           }
-          closeCreatePostModal();
         } catch (error) {
           console.log("There was an error: " + error);
         }
-      }
+    }
+
+    let today = new Date().toISOString().split('T')[0]
 
     return (
         <section className="modal fade" id="createPostModal">
@@ -67,22 +71,25 @@ const CreatePostModal = () => {
                     onClick={closeCreatePostModal}
                 />
                 <h1 className="modal-title mx-auto">Create a post</h1>
+                
                 </div>
+                <span id="create_post_message"></span>
                 <div className="modal-body">
                 <div className="form__input-group"> 
                     <label htmlFor="pets">Choose a pet:  </label>
                     <select name="pets" id="pets_dropdown">
-                    <option value="add">Add a pet</option>
+                        <option value="add">Add a pet in your profile -&gt;</option>
                     </select>
+                    <a href="/profile">Add a pet</a>
                 </div>
                 <div className="form__input-group">
                     <label htmlFor="startDate">Start date</label>
-                    <input type="date" className="form__input" id="start_date"></input>
+                    <input type="date" className="form__input" id="start_date" min={today}></input>
                     <div className="form__input-error-message"></div>
                 </div>
                 <div className="form__input-group">
                     <label htmlFor="endDate">End date</label>
-                    <input type="date" className="form__input" id="end_date"></input>
+                    <input type="date" className="form__input" id="end_date" min={today}></input>
                     <div className="form__input-error-message"></div>
                 </div>
                 {/* <div className="form__input-group">
@@ -101,7 +108,7 @@ const CreatePostModal = () => {
                     <div className="form__input-error-message"></div>
                 </div>
                 <button
-                    onClick={submitPost}
+                    onClick={storePosts}
                     className="form__button"
                     type="submit"
                     // onClick={() => {

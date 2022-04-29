@@ -19,7 +19,7 @@ function Profile() {
   const [profileEditMode, setProfileEditMode] = useState(false);
   const [userInfo, setUserInfo] = useState({})
   const [loading, setLoading] = useState(true)
-    
+  
   useEffect(() => {
     const url = window.location.href
     let endpoint = url.substring(url.indexOf('/profile'))
@@ -29,6 +29,9 @@ function Profile() {
          .then(function (data) {
             if(data.status === 'success') {
               setUserInfo(data.userInfo)
+              if(data.userInfo.isFirstTime) {
+                setProfileEditMode(true)
+              }
               setLoading(false)
             } else{
               console.log("Backend got the fetch, but error occured: ", data.error)
@@ -42,7 +45,6 @@ function Profile() {
   }, [])
 
   function handleEditComplete(result) {
-    console.log("handleEditComplete", result);
     if (result != null) {
       setUserInfo(result)
     }
