@@ -38,6 +38,7 @@ const SignInModal = (props) => {
       {method: "POST", body: JSON.stringify(myData), headers: {'Content-Type': 'application/json'}, mode: "cors"}
       )
       let status = await postPetResponse.json();
+      console.log(status)
       if(status.status === "success"){
         document.getElementById("signup_username").value = "";
         document.getElementById("signup_email").value = "";

@@ -22,7 +22,7 @@ import "swiper/css/autoplay";
 
 export default function UserProfile({ stored, startEditCallback }) {
   const url = window.location.href
-  console.log(stored)
+  
   let loggedInUser = window.localStorage.getItem("userID")
   let renderedUser 
   if(url.endsWith('/profile')) {
@@ -38,7 +38,6 @@ export default function UserProfile({ stored, startEditCallback }) {
     pet = stored.pets[0];
     hasPet = true;
   }
-  console.log(pet)
   let cleanStart, cleanEnd;
   if (stored.posts.length > 0) {
     cleanStart = new Date(stored.posts[0].start_date).toLocaleDateString();
@@ -201,7 +200,7 @@ export default function UserProfile({ stored, startEditCallback }) {
                         <div className="mask-content">
                         <div className="pet-name">{pet.name}</div>
                           <div className="pet-breed">{pet.breed}</div>
-                          <div className="pet-size">{pet.petSize}</div>
+                          <div className="pet-size">{pet.size}</div>
                         </div>
                       </div>
                       <div className="photo-desc">{pet.bio}</div>
@@ -217,7 +216,7 @@ export default function UserProfile({ stored, startEditCallback }) {
                         <div className="mask-content">
                         <div className="pet-name">{pet.name}</div>
                           <div className="pet-breed">{pet.breed}</div>
-                          <div className="pet-size">{pet.petSize}</div>
+                          <div className="pet-size">{pet.size}</div>
                         </div>
                       </div>
                       <div className="photo-desc">{pet.bio}</div>
@@ -233,7 +232,7 @@ export default function UserProfile({ stored, startEditCallback }) {
                         <div className="mask-content">
                         <div className="pet-name">{pet.name}</div>
                           <div className="pet-breed">{pet.breed}</div>
-                          <div className="pet-size">{pet.petSize}</div>
+                          <div className="pet-size">{pet.size}</div>
                         </div>
                       </div>
                       <div className="photo-desc">{pet.bio}</div>
@@ -249,7 +248,7 @@ export default function UserProfile({ stored, startEditCallback }) {
                         <div className="mask-content">
                           <div className="pet-name">{pet.name}</div>
                           <div className="pet-breed">{pet.breed}</div>
-                          <div className="pet-size">{pet.petSize}</div>
+                          <div className="pet-size">{pet.size}</div>
                         </div>
                       </div>
                       <div className="photo-desc">{pet.bio}</div>
