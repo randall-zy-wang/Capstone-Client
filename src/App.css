@@ -662,6 +662,24 @@ span {
   color: red;
 }
 
+.page-link {
+  color: #ff9b00;
+}
+.page-item:last-child .page-link {
+  border-top-right-radius: 1rem;
+  border-bottom-right-radius: 1rem;
+}
+.page-item:first-child .page-link {
+  margin-left: 0;
+  border-top-left-radius: 1rem;
+  border-bottom-left-radius: 1rem;
+}
+
+.post-title {
+  margin-top: 35px;
+  margin-bottom: 25px;
+}
+
 /* Media Queries */
 @media only screen and (min-width: 600px) {
   /* .icon {
@@ -767,6 +785,15 @@ span {
   }
   .edit-btn-container .edit-button {
     font-size: 20px;
+  }
+  .profile-name-post {
+    margin-top: -20px;
+  }
+  .profile-name-c {
+    display: none;
+  }
+  .post-title {
+    margin-top: 0px;
   }
   .profile-name-post {
     margin-top: -20px;

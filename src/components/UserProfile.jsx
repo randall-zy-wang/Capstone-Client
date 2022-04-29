@@ -294,15 +294,6 @@ export default function UserProfile({ stored, startEditCallback }) {
           <></>
         )}
       </div>
-        
-      {/* <img
-        onClick={createPost}
-        className="icon"
-        role="button"
-        alt="Add a Post"
-        src={plusIcon}
-      />
-      <CreatePostModal /> */}
     </div>
   );
 }
