@@ -28,7 +28,7 @@ export default function UserProfile({ stored, startEditCallback }) {
   if(url.endsWith('/profile')) {
     renderedUser = loggedInUser
   } else {
-    renderedUser = url.substring(url.indexOf('user=') + 5)
+    renderedUser = url.substring(url.indexOf("user=") + 5);
   }
   let isOwnProfile = loggedInUser === renderedUser;
 
@@ -87,39 +87,43 @@ export default function UserProfile({ stored, startEditCallback }) {
             src={stored.headimg || wuyanzu}
           ></img>
 
-        {hasPet ? (<>
-          <div className="profile-row">
-            <span className="profile-row-name">Pet Type:</span>
-            <span className="profile-row-value"> {pet.type}</span>
-          </div>
-          <div className="profile-row">
-            <span className="profile-row-name">Pet Name:</span>
-            <span className="profile-row-value"> {pet.name}</span>
-          </div>
-          <div className="profile-row">
-            <span className="profile-row-name">Pet Breed:</span>
-            <span className="profile-row-value"> {pet.breed}</span>
-          </div>
-          <div className="profile-row">
-            <span className="profile-row-name">Pet Size:</span>
-            <span className="profile-row-value"> {pet.size}</span>
-          </div>
-          <div className="profile-row">
-            <span className="profile-row-name">Pet Gender:</span>
-            <span className="profile-row-value"> {pet.gender}</span>
-          </div>
-          <div className="profile-row">
-            <span className="profile-row-name">Pet Age:</span>
-            <span className="profile-row-value"> {pet.age}</span>
-          </div>
-          <div className="profile-row">
-            <span className="profile-row-name">Pet Description:</span>
-            <span className="profile-row-value"> {pet.bio}</span>
-          </div>
-        </>) : (<></>)}
-      </div>
-      
-      <div className="profile-con">
+          {hasPet ? (
+            <>
+              <div className="profile-row">
+                <span className="profile-row-name">Pet Type:</span>
+                <span className="profile-row-value"> {pet.type}</span>
+              </div>
+              <div className="profile-row">
+                <span className="profile-row-name">Pet Name:</span>
+                <span className="profile-row-value"> {pet.name}</span>
+              </div>
+              <div className="profile-row">
+                <span className="profile-row-name">Pet Breed:</span>
+                <span className="profile-row-value"> {pet.breed}</span>
+              </div>
+              <div className="profile-row">
+                <span className="profile-row-name">Pet Size:</span>
+                <span className="profile-row-value"> {pet.size}</span>
+              </div>
+              <div className="profile-row">
+                <span className="profile-row-name">Pet Gender:</span>
+                <span className="profile-row-value"> {pet.gender}</span>
+              </div>
+              <div className="profile-row">
+                <span className="profile-row-name">Pet Age:</span>
+                <span className="profile-row-value"> {pet.age}</span>
+              </div>
+              <div className="profile-row">
+                <span className="profile-row-name">Pet Description:</span>
+                <span className="profile-row-value"> {pet.bio}</span>
+              </div>
+            </>
+          ) : (
+            <></>
+          )}
+        </div>
+
+        <div className="profile-con">
           <div className="profile-con-top">
             <img
               className="profile-con-top-pic"
@@ -198,7 +202,7 @@ export default function UserProfile({ stored, startEditCallback }) {
                           style={{ width: "100%" }}
                         />
                         <div className="mask-content">
-                        <div className="pet-name">{pet.name}</div>
+                          <div className="pet-name">{pet.name}</div>
                           <div className="pet-breed">{pet.breed}</div>
                           <div className="pet-size">{pet.size}</div>
                         </div>
@@ -214,7 +218,7 @@ export default function UserProfile({ stored, startEditCallback }) {
                           style={{ width: "100%" }}
                         />
                         <div className="mask-content">
-                        <div className="pet-name">{pet.name}</div>
+                          <div className="pet-name">{pet.name}</div>
                           <div className="pet-breed">{pet.breed}</div>
                           <div className="pet-size">{pet.size}</div>
                         </div>
@@ -230,7 +234,7 @@ export default function UserProfile({ stored, startEditCallback }) {
                           style={{ width: "100%" }}
                         />
                         <div className="mask-content">
-                        <div className="pet-name">{pet.name}</div>
+                          <div className="pet-name">{pet.name}</div>
                           <div className="pet-breed">{pet.breed}</div>
                           <div className="pet-size">{pet.size}</div>
                         </div>
@@ -263,13 +267,17 @@ export default function UserProfile({ stored, startEditCallback }) {
         </div>
       </div>
 
-      {isOwnProfile ? (<>
-        <div className="edit-btn-container">
-          <div className="edit-button" onClick={startEditCallback}>
-            Edit
+      {isOwnProfile ? (
+        <>
+          <div className="edit-btn-container">
+            <div className="edit-button" onClick={startEditCallback}>
+              Edit
+            </div>
           </div>
-        </div>
-      </>): (<></>)}
+        </>
+      ) : (
+        <></>
+      )}
 
       <div className="profile-con">
         {stored.posts.length > 0 ? (
