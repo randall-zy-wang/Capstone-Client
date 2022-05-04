@@ -4,7 +4,6 @@ import EditableUserProfile from "./EditableUserProfile";
 import UserProfile from "./UserProfile";
 import wuyanzu from "../photos/wuyanzu.png";
 import React from "react";
-import snap from "../photos/snapchat.png";
 import facebook from "../photos/facebook2.png";
 import instagram from "../photos/instagram.png";
 import pet1 from "../photos/pet1.jpg";

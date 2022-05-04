@@ -47,6 +47,7 @@ export default function EditableUserProfile({ stored, editCompleteCallback }) {
       )
       let statusInfo = await postProfileResponse.json();
       if(statusInfo.status === "success"){
+        window.localStorage.setItem('username', username)
         alert("profile saved successfully")
         editCompleteCallback(profileInput);
       } else{

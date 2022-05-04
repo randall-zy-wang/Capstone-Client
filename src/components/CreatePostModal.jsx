@@ -1,7 +1,7 @@
 import React from "react";
 import closeIcon from "../photos/icons8-close-16.png";
 
-const CreatePostModal = () => {
+const CreatePostModal = (props) => {
 
     function closeCreatePostModal() {
         const createPostModal = document.getElementById("createPostModal");
@@ -19,12 +19,14 @@ const CreatePostModal = () => {
           let end_date = document.getElementById("end_date").value;
           let description = document.getElementById("description").value;
           let img = document.getElementById("img_link").value;
+          let postID = document.getElementById("postID").value
           // store the image
           
+          console.log(props)
           if(pet_name === "add") {
             document.getElementById("create_post_message").textContent = "Please add a pet in your profile!"
-          } else if(end_date < start_date) {
-            document.getElementById("create_post_message").textContent = "Please enter correct dates."
+          } else if(end_date < start_date || start_date == '' || end_date == '') {
+            document.getElementById("create_post_message").textContent = "Please enter valid dates."
           } else {
             const myData = {
                 pet_name: pet_name,
@@ -32,31 +34,32 @@ const CreatePostModal = () => {
                 start_date: start_date,
                 end_date: end_date,
                 img: img,
-              };
-              let postPetResponse = await fetch(`/posts`, {
-                method: "POST",
-                body: JSON.stringify(myData),
-                headers: { "Content-Type": "application/json" },
-              });
-              let status = await postPetResponse.json();
-              if (status.status === "error") {
-                alert("Error: " +  status.error);
-              } else {
-                document.getElementById("description").innerHTML = "";
-                document.getElementById("start_date").innerHTML = "";
-                document.getElementById("end_date").innerHTML = "";
-                document.getElementById("img_link").innerHTML = "";
-                alert("Successfully uploaded!");
-                closeCreatePostModal();
-                window.location.reload(false)
-              }
+                postID: postID
+            };
+            let postPetResponse = await fetch(`/posts`, {
+              method: "POST",
+              body: JSON.stringify(myData),
+              headers: { "Content-Type": "application/json" },
+            });
+            let status = await postPetResponse.json();
+            if (status.status === "error") {
+              alert("Error: " +  status.error);
+            } else {
+              document.getElementById("description").innerHTML = "";
+              document.getElementById("start_date").innerHTML = "";
+              document.getElementById("end_date").innerHTML = "";
+              document.getElementById("img_link").innerHTML = "";
+              alert("Successfully uploaded!");
               closeCreatePostModal();
+              window.location.reload(false)
+            }
+            closeCreatePostModal();
           }
         } catch (error) {
           console.log("There was an error: " + error);
         }
     }
-
+    
     let today = new Date().toISOString().split('T')[0]
 
     return (
@@ -107,27 +110,12 @@ const CreatePostModal = () => {
                     <textarea className="form__input" id="description"></textarea>
                     <div className="form__input-error-message"></div>
                 </div>
+                <div id="postID"></div>
                 <button
                     onClick={storePosts}
                     className="form__button"
                     type="submit"
-                    // onClick={() => {
-                    //   setPostCardData([
-                    //     ...postCardData,
-                    //     {
-                    //       title: document.getElementById("petName").value,
-                    //       type: "",
-                    //       dates:
-                    //         document.getElementById("startDate").value +
-                    //         " - " +
-                    //         document.getElementById("endDate").value,
-                    //       description: document.getElementById("description").value,
-                    //       image: "",
-                    //     },
-                    //   ]);
-                    //   closeCreatePostModal();
-                    // }}
-                >
+                 >
                     Submit
                 </button>
                 </div>

@@ -339,6 +339,7 @@ footer em {
 }
 
 .post-card-action-icon {
+  margin: 5px;
   position: relative;
   top: -25px;
 }

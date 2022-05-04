@@ -15,7 +15,7 @@ const Posts = () => {
     fetch(`/posts`)
       .then((response) => response.json())
       .then(function (data) {
-        setPostCardData(data);
+        setPostCardData(data)
       });
   }, [page])
 
@@ -24,16 +24,14 @@ const Posts = () => {
   const end = Math.min(page * MAX_ITEMS_PER_PAGE, postCardData.length);
 
   for (let i = start; i < end; i++) {
-    // const newIndex = postCardElements.length;
-    let cleanStart = new Date(postCardData[i].start_date).toLocaleDateString();
-    let cleanEnd = new Date(postCardData[i].end_date).toLocaleDateString();
     postCardElements.push(
       <PostCard
+        postID={postCardData[i].postID}
         userID={postCardData[i].userID}
         pet_name={postCardData[i].pet.name}
         pet_type={postCardData[i].pet.type}
-        start_date={cleanStart}
-        end_date={cleanEnd}
+        start_date={postCardData[i].start_date}
+        end_date={postCardData[i].end_date}
         description={postCardData[i].description}
         img={postCardData[i].img}
         // image={postCardData[i].image}

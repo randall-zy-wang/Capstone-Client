@@ -23,12 +23,14 @@ import "swiper/css/autoplay";
 export default function UserProfile({ stored, startEditCallback }) {
   const url = window.location.href
   
+  let post = stored.posts[0]
+
   let loggedInUser = window.localStorage.getItem("userID")
-  let renderedUser 
+  let renderedUser
   if(url.endsWith('/profile')) {
     renderedUser = loggedInUser
   } else {
-    renderedUser = url.substring(url.indexOf("user=") + 5);
+    renderedUser = url.substring(url.indexOf('user=') + 5)
   }
   let isOwnProfile = loggedInUser === renderedUser;
 
@@ -37,44 +39,6 @@ export default function UserProfile({ stored, startEditCallback }) {
   if (stored.pets[0].name) {
     pet = stored.pets[0];
     hasPet = true;
-  }
-  let cleanStart, cleanEnd;
-  if (stored.posts.length > 0) {
-    cleanStart = new Date(stored.posts[0].start_date).toLocaleDateString();
-    cleanEnd = new Date(stored.posts[0].end_date).toLocaleDateString();
-  }
-
-  async function createPost() {
-    let petsJson;
-    try {
-      let response = await fetch("/posts/pets");
-      petsJson = await response.json();
-    } catch (error) {
-      petsJson = { status: "error", error: error };
-    }
-    if (petsJson.status === "success") {
-      // I have no idea why but these next lines have to exist together to make it work
-      setTimeout(() => {
-        createPostModal.classList.add("show");
-      }, 25);
-      const createPostModal = document.getElementById("createPostModal");
-      createPostModal.style.display = "block";
-      // ends here
-
-      let petsOptions = petsJson.pets.map((pet) => {
-        return `<option value="${pet.name}">${pet.name}</option>\t`;
-      });
-      petsOptions += `<option value="add">Add a pet</option>`;
-      document.getElementById("pets_dropdown").innerHTML = petsOptions;
-    } else {
-      if (petsJson.error === "not logged in") {
-        // prompt log in
-        alert("You must log in to create a post!");
-        // document.getElementById('signInModal').style.display = "block"
-      } else {
-        alert("Error: " + petsJson.error);
-      }
-    }
   }
 
   return (
@@ -280,19 +244,19 @@ export default function UserProfile({ stored, startEditCallback }) {
       )}
 
       <div className="profile-con">
-        {stored.posts.length > 0 ? (
+        {post ? (
           <>
             <div className="profile-name-post">On-going post:</div>
             <div className="profile-post">
               <PostCard
-                postID={stored.posts[0]._id}
-                userID={stored.userID}
+                postID={post._id}
+                userID={post.userID}
                 pet_name={pet.name}
                 pet_type={pet.type}
-                start_date={cleanStart}
-                end_date={cleanEnd}
-                description={stored.posts[0].description}
-                img={stored.posts[0].img}
+                start_date={post.start_date}
+                end_date={post.end_date}
+                description={post.description}
+                img={post.img}
                 renderEdit={isOwnProfile}
               />
             </div>
@@ -301,6 +265,7 @@ export default function UserProfile({ stored, startEditCallback }) {
           <></>
         )}
       </div>
+      <CreatePostModal />
     </div>
   );
 }
