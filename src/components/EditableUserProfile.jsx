@@ -11,7 +11,11 @@ import React from "react";
 
 export default function EditableUserProfile({ stored, editCompleteCallback }) {
   let data = JSON.parse(JSON.stringify(stored))
+  if(!data.pets[0].img) {
+    data.pets[0].img = []
+  }
   const[profileInput, setProfileInput] = useState(data)
+  // console.log(profileInput.pets[0])
 
   function handleCancelClicked() {
     editCompleteCallback(null);
@@ -22,6 +26,7 @@ export default function EditableUserProfile({ stored, editCompleteCallback }) {
     let username = document.getElementById("username").value
     let petName = document.getElementById("pet-name").value
     let petType = document.getElementById("pet-type").value
+    let petPhoto = document.getElementById("pet-photo").value
     let petInfoFilled = false
     let petInfoInput = document.querySelectorAll(".pet-info-input")
     petInfoInput.forEach((oneInput) => {
@@ -40,7 +45,11 @@ export default function EditableUserProfile({ stored, editCompleteCallback }) {
     if(petInfoFilled && petType === '') {
       document.getElementById("pet-type-span").innerHTML = "Pet type cannot be empty if you wish to add a pet"
       readyForFetch = false
-    } 
+    }
+    if(petInfoFilled && petPhoto === '') {
+      document.getElementById("pet-photo-span").innerHTML = "Please upload at least one photo if you wish to add a pet"
+      readyForFetch = false
+    }
     if(readyForFetch) {
       let postProfileResponse = await fetch(`/profile`,
         {method: "POST", body: JSON.stringify(profileInput), headers: {'Content-Type': 'application/json'}}
@@ -58,17 +67,17 @@ export default function EditableUserProfile({ stored, editCompleteCallback }) {
     }
   }
 
-  function uploadPhoto(e) {
-    console.log("e===========", e.target.file);
+  // function uploadPhoto(e) {
+  //   console.log("e===========", e.target.file);
 
-    var file = e.target.files[0];
-    let r = new FileReader(); 
-    r.onload = function () {
-      console.log(r.result); 
-      profileInput.headimg = r.result;
-    };
-    r.readAsDataURL(file);
-  }
+  //   var file = e.target.files[0];
+  //   let r = new FileReader(); 
+  //   r.onload = function () {
+  //     console.log(r.result); 
+  //     profileInput.headimg = r.result;
+  //   };
+  //   r.readAsDataURL(file);
+  // }
 
   function uploadPet(e, index) {
     console.log("e===========", e.target.file);
@@ -99,12 +108,19 @@ export default function EditableUserProfile({ stored, editCompleteCallback }) {
       </div>
 
       <div className="profile-edit-row">
-        <div className="profile-edit-row-name">Profile photo</div>
-        <input type="file" onChange={(e) => uploadPhoto(e)} />
+        <div className="profile-edit-row-name">Profile Photo</div>
+        <input
+          type="text"
+          value={profileInput.profilePhoto}
+          onChange={(e) => {
+            profileInput.profilePhoto = e.target.value;
+            setProfileInput({ ...profileInput })
+          }}
+        />
         <img
-          alt=""
+          alt="profile Photo"
           style={{ width: 100, height: 100, margin: 10, borderRadius: 50 }}
-          src={profileInput.headimg || wuyanzu}
+          src={profileInput.profilePhoto || wuyanzu}
         ></img>
       </div>
 
@@ -167,7 +183,7 @@ export default function EditableUserProfile({ stored, editCompleteCallback }) {
           margin: 10,
         }}
       >
-        Pet info
+        Pet Info
       </div>
       <div className="profile-edit-row">
         <div className="profile-edit-row-name">Pet Name:</div>
@@ -261,9 +277,58 @@ export default function EditableUserProfile({ stored, editCompleteCallback }) {
       </div>
 
       <div className="profile-edit-row">
-        <div className="profile-edit-row-name">Pet photo 1</div>
-        <input type="file" onChange={(e) => uploadPet(e, 1)} />
-        {profileInput.pet1 ? (
+        <div className="profile-edit-row-name">Pet Photo 1 (This photo will appear in your post)</div>
+        <span id="pet-photo-span"></span>
+        <input
+          id="pet-photo"
+          className="form-input"
+          type="text"
+          value={profileInput.pets[0].img[0]} 
+          onChange={(e) => {
+            profileInput.pets[0].img[0] = e.target.value;
+            setProfileInput({ ...profileInput })
+          }}
+          />
+      </div>
+
+      <div className="profile-edit-row">
+        <div className="profile-edit-row-name">Pet Photo 2</div>
+        <input 
+          className="form-input"
+          type="text"
+          value={profileInput.pets[0].img[1]}
+          onChange={(e) => {
+            profileInput.pets[0].img[1] = e.target.value;
+            setProfileInput({ ...profileInput })
+          }}
+          />
+      </div>
+
+      <div className="profile-edit-row">
+        <div className="profile-edit-row-name">Pet Photo 3</div>
+        <input 
+          className="form-input"
+          type="text"
+          value={profileInput.pets[0].img[2]}
+          onChange={(e) => {
+            profileInput.pets[0].img[2] = e.target.value;
+            setProfileInput({ ...profileInput })
+          }}
+          />
+      </div>
+      
+      <div className="profile-edit-row">
+        <div className="profile-edit-row-name">Pet Photo 4</div>
+        <input 
+          className="form-input"
+          type="text"
+          value={profileInput.pets[0].img[3]}
+          onChange={(e) => {
+            profileInput.pets[0].img[3] = e.target.value;
+            setProfileInput({ ...profileInput })
+          }}
+          />
+          {/* {profileInput.pet1 ? (
           <img
             alt=""
             style={{ width: 100, height: 100, margin: 10, borderRadius: 50 }}
@@ -271,48 +336,9 @@ export default function EditableUserProfile({ stored, editCompleteCallback }) {
           ></img>
         ) : (
           ""
-        )}
+        )} */}
       </div>
-
-      <div className="profile-edit-row">
-        <div className="profile-edit-row-name">Pet photo 2</div>
-        <input type="file" onChange={(e) => uploadPet(e, 2)} />
-        {profileInput.pet2 ? (
-          <img
-            alt=""
-            style={{ width: 100, height: 100, margin: 10, borderRadius: 50 }}
-            src={profileInput.pet2}
-          ></img>
-        ) : (
-          ""
-        )}
-      </div>
-      <div className="profile-edit-row">
-        <div className="profile-edit-row-name">Pet photo 3</div>
-        <input type="file" onChange={(e) => uploadPet(e, 3)} />
-        {profileInput.pet3 ? (
-          <img
-            alt=""
-            style={{ width: 100, height: 100, margin: 10, borderRadius: 50 }}
-            src={profileInput.pet3}
-          ></img>
-        ) : (
-          ""
-        )}
-      </div>
-      <div className="profile-edit-row">
-        <div className="profile-edit-row-name">Pet photo 4</div>
-        <input type="file" onChange={(e) => uploadPet(e, 4)} />
-        {profileInput.pet4 ? (
-          <img
-            alt=""
-            style={{ width: 100, height: 100, margin: 10, borderRadius: 50 }}
-            src={profileInput.pet4}
-          ></img>
-        ) : (
-          ""
-        )}
-      </div>
+      
       <span id="error-message"></span>
       <div>
         <button className="profile-edit-button" onClick={handleSaveClicked}>

@@ -22,7 +22,7 @@ import "swiper/css/autoplay";
 
 export default function UserProfile({ stored, startEditCallback }) {
   const url = window.location.href
-  
+  // console.log(stored.profilePhoto);
   let post = stored.posts[0]
 
   let loggedInUser = window.localStorage.getItem("userID")
@@ -48,7 +48,7 @@ export default function UserProfile({ stored, startEditCallback }) {
           <img
             className="profile-pic"
             alt={"headshot"}
-            src={stored.headimg || wuyanzu}
+            src={stored.profilePhoto || wuyanzu}
           ></img>
 
           {hasPet ? (
@@ -89,11 +89,6 @@ export default function UserProfile({ stored, startEditCallback }) {
 
         <div className="profile-con">
           <div className="profile-con-top">
-            <img
-              className="profile-con-top-pic"
-              alt={"headshot"}
-              src={stored.headimg || wuyanzu}
-            ></img>
             <div>
               <div className="profile-name">{stored.username}</div>
             </div>
@@ -161,8 +156,8 @@ export default function UserProfile({ stored, startEditCallback }) {
                       <div className="mask">
                         <img
                           className="content"
-                          src={stored.pet1 ? stored.pet1 : pet1}
-                          alt={"pet photo1"}
+                          src={pet.img[0] ? pet.img[0] : pet1}
+                          alt={"pet photo 1"}
                           style={{ width: "100%" }}
                         />
                         <div className="mask-content">
@@ -173,12 +168,12 @@ export default function UserProfile({ stored, startEditCallback }) {
                       </div>
                       <div className="photo-desc">{pet.bio}</div>
                     </SwiperSlide>
-                    <SwiperSlide>
+                    {pet.img[1] ? <> <SwiperSlide>
                       <div className="mask">
                         <img
                           className="content"
-                          src={stored.pet2 ? stored.pet2 : pet2}
-                          alt={"pet photo2"}
+                          src={pet.img[1]}
+                          alt={"pet photo 2"}
                           style={{ width: "100%" }}
                         />
                         <div className="mask-content">
@@ -189,11 +184,13 @@ export default function UserProfile({ stored, startEditCallback }) {
                       </div>
                       <div className="photo-desc">{pet.bio}</div>
                     </SwiperSlide>
-                    <SwiperSlide>
+                    </> : <></>}
+                    
+                    {pet.img[2] ? <> <SwiperSlide>
                       <div className="mask">
                         <img
                           className="content"
-                          src={stored.pet3 ? stored.pet3 : pet3}
+                          src={pet.img[2]}
                           alt={"pet photo3"}
                           style={{ width: "100%" }}
                         />
@@ -205,12 +202,13 @@ export default function UserProfile({ stored, startEditCallback }) {
                       </div>
                       <div className="photo-desc">{pet.bio}</div>
                     </SwiperSlide>
-                    <SwiperSlide>
+                    </> : <></>}
+                    {pet.img[3] ? <><SwiperSlide>
                       <div className="mask">
                         <img
                           className="content"
-                          src={stored.pet4 ? stored.pet4 : pet4}
-                          alt={"pet photo4"}
+                          src={pet.img[3]}
+                          alt={"pet photo 4"}
                           style={{ width: "100%" }}
                         />
                         <div className="mask-content">
@@ -221,6 +219,7 @@ export default function UserProfile({ stored, startEditCallback }) {
                       </div>
                       <div className="photo-desc">{pet.bio}</div>
                     </SwiperSlide>
+                    </> : <></>}
                   </Swiper>
                 </div>
               </div>
@@ -256,7 +255,7 @@ export default function UserProfile({ stored, startEditCallback }) {
                 start_date={post.start_date}
                 end_date={post.end_date}
                 description={post.description}
-                img={post.img}
+                img={pet.img[0]}
                 renderEdit={isOwnProfile}
               />
             </div>

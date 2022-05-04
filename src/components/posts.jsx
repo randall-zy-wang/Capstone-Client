@@ -5,7 +5,7 @@ import CreatePostModal from "./CreatePostModal";
 import plusIcon from "../photos/icons8-plus-64.png";
 import { useEffect } from "react";
 
-const MAX_ITEMS_PER_PAGE = 5;
+const MAX_ITEMS_PER_PAGE = 6;
 
 const Posts = () => {
   const [page, setPage] = useState(1);
@@ -16,6 +16,7 @@ const Posts = () => {
       .then((response) => response.json())
       .then(function (data) {
         setPostCardData(data)
+        // console.log(data)
       });
   }, [page])
 
@@ -23,7 +24,7 @@ const Posts = () => {
   const start = Math.min((page - 1) * MAX_ITEMS_PER_PAGE, postCardData.length);
   const end = Math.min(page * MAX_ITEMS_PER_PAGE, postCardData.length);
 
-  for (let i = start; i < end; i++) {
+  for (let i = end - 1; i >= start; i--) {
     postCardElements.push(
       <PostCard
         postID={postCardData[i].postID}
@@ -33,17 +34,7 @@ const Posts = () => {
         start_date={postCardData[i].start_date}
         end_date={postCardData[i].end_date}
         description={postCardData[i].description}
-        img={postCardData[i].img}
-        // image={postCardData[i].image}
-        // onDelete={() => {
-        //   if (
-        //     window.confirm("Are you really really sure that you wanna delete?")
-        //   ) {
-        //     const newArray = postCardData.slice();
-        //     newArray.splice(newIndex, 1);
-        //     setPostCardData(newArray);
-        //   }
-        // }}
+        img={postCardData[i].pet.img[0]}
       />
     );
   }

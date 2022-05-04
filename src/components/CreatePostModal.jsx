@@ -18,7 +18,6 @@ const CreatePostModal = (props) => {
           let start_date = document.getElementById("start_date").value;
           let end_date = document.getElementById("end_date").value;
           let description = document.getElementById("description").value;
-          let img = document.getElementById("img_link").value;
           let postID = document.getElementById("postID").value
           // store the image
           
@@ -33,7 +32,6 @@ const CreatePostModal = (props) => {
                 description: description,
                 start_date: start_date,
                 end_date: end_date,
-                img: img,
                 postID: postID
             };
             let postPetResponse = await fetch(`/posts`, {
@@ -48,7 +46,6 @@ const CreatePostModal = (props) => {
               document.getElementById("description").innerHTML = "";
               document.getElementById("start_date").innerHTML = "";
               document.getElementById("end_date").innerHTML = "";
-              document.getElementById("img_link").innerHTML = "";
               alert("Successfully uploaded!");
               closeCreatePostModal();
               window.location.reload(false)
@@ -100,11 +97,11 @@ const CreatePostModal = (props) => {
                     <input type="file" className="form__input" id="petPhoto"></input>
                     <div className="form__input-error-message"></div>
                 </div> */}
-                <div className="form__input-group">
+                {/* <div className="form__input-group">
                     <label htmlFor="img_link">Image Link</label>
                     <input type="text" className="form__input" id="img_link"></input>
                     <div className="form__input-error-message"></div>
-                </div>
+                </div> */}
                 <div className="form__input-group">
                     <label htmlFor="description">Description</label>
                     <textarea className="form__input" id="description"></textarea>

@@ -40,7 +40,6 @@ const PostCard = (props) => {
         document.getElementById("pets_dropdown").innerHTML = petsOptions
         document.getElementById("start_date").valueAsDate = new Date(props.start_date)
         document.getElementById("end_date").valueAsDate = new Date(props.end_date)
-        document.getElementById("img_link").value = props.img
         document.getElementById("description").value = props.description
         document.getElementById("postID").value = props.postID
       } else {
